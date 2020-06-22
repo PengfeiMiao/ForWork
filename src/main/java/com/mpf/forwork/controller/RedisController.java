@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mpf
@@ -88,13 +86,13 @@ public class RedisController {
 
     @GetMapping("/set")
     public void setTest() {
-        user.setName("MPF");
+        user.setUsername("MPF");
     }
 
     @GetMapping("/get")
     public void getTest() {
         user = user.getUser();
-        System.out.println(user.getName());
+        System.out.println(user.getUsername());
     }
 
     public static Map<String, String> objectToMap(Object obj) {
@@ -102,26 +100,6 @@ public class RedisController {
             return null;
         }
         Map<String, String> map = new HashMap<>(10);
-//        BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
-//        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-//        for (PropertyDescriptor property : propertyDescriptors) {
-//            String key = property.getName();
-//            if (key.compareToIgnoreCase("class") == 0) {
-//                continue;
-//            }
-//            Method getter = property.getReadMethod();
-//            String value = getter!=null ? (String)getter.invoke(obj) : null;
-//            map.put(key, value);
-//        }
-//
-//        Field[] declaredFields = obj.getClass().getDeclaredFields();
-//        for (Field field : declaredFields) {
-//            field.setAccessible(true);
-//            map.put(field.getName(), new Gson().toJson(field.get(obj)));
-//        }
-//
-//        System.out.println(obj);
-//        return map;
 
         if(!StringUtils.isEmpty(obj.toString())){
             //先转成json字符，再转回json对象，JSON实际上是实现Map接口的子类，所以可以直接赋值给Map对象

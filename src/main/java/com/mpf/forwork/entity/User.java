@@ -1,5 +1,7 @@
 package com.mpf.forwork.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -14,17 +16,18 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @Scope(ConfigurableListableBeanFactory.SCOPE_SINGLETON)
-public class User {
-    private Long id;
-    private String name;
-    private Integer age;
-    private String email;
+public class User implements Cloneable{
+    @TableId(value="id",type= IdType.AUTO)
+    private Integer id;
+    private String username;
+    private String password;
+    private String role;
 
     public User(){}
 
-    public User(Long id, String name){
+    public User(Integer id, String name){
         this.id = id;
-        this.name = name;
+        this.username = name;
     }
 
     /**
@@ -34,7 +37,7 @@ public class User {
     @Bean(value="user0",initMethod="initUser",destroyMethod="destroyUser")
     public User getUser(){
         System.out.println("创建user实例");
-        return new User(1L,"MPF");
+        return new User(1,"MPF");
     }
 
     public void initUser(){
@@ -42,5 +45,17 @@ public class User {
     }
     public void destroyUser(){
         System.out.println("bean销毁之后执行");
+    }
+
+    @Override
+    public Object clone(){
+        User o = null;
+        try {
+            o = (User)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        //上面已经可以做到浅层克隆了，深层克隆就需要解决对象的对象属性
+        return o;
     }
 }

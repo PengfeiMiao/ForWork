@@ -41,7 +41,7 @@ public class MessageController {
 
     @GetMapping("/test")
     public void test() {
-        System.out.println(user.getName());
+        System.out.println(user.getUsername());
 /*
         SingleMailSendObj singleMailSendObj = new SingleMailSendObj();
         singleMailSendObj.setMailContent("你好啊");
