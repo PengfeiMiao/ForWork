@@ -37,6 +37,22 @@ public class Test implements Serializable {
         System.arraycopy(a, 0, newArray, 0, Math.min(length, newLength));
         return newArray;
     }
+
+    //重写系统输出流
+    static void method(int a,int b)  {
+        PrintStream myStream = new PrintStream(System.out) {
+            @Override
+            public void println(String x) {
+                if("a".equals(x.substring(0,1))) {
+                    super.println("a=100");
+                }
+                if("b".equals(x.substring(0,1))) {
+                    super.println("b=200");
+                }
+            }
+        };
+        System.setOut(myStream);
+    }
 }
 
 class MyObject {

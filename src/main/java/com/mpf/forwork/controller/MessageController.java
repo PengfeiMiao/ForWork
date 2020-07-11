@@ -2,20 +2,25 @@ package com.mpf.forwork.controller;
 
 //import com.mpf.forwork.customObject.ResultDTO;
 import com.mpf.forwork.entity.User;
+import com.mpf.forwork.messageobj.Message;
 import com.mpf.forwork.messageobj.SingleMailSendObj;
+import com.mpf.forwork.netty.client.NettyClient;
+import com.mpf.forwork.netty.protocol.protobuf.MessageBase;
 import com.mpf.forwork.service.MailSendService;
 //import com.mpf.forwork.service.QueueMailService;
+import com.mpf.forwork.service.kafka.KafkaProducer;
 import com.mpf.forwork.service.mq.ConsumerService;
 import com.mpf.forwork.service.mq.ProducerService;
 import com.mpf.forwork.staticobject.CommonStatic;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.mpf.forwork.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
+
+import static com.mpf.forwork.staticobject.CommonStatic.threadLocal;
 
 /**
  * @author xiaoyin
@@ -34,14 +39,13 @@ public class MessageController {
     @Autowired
     private ConsumerService consumerService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     public static Boolean flag = false;
 
-    @Resource
-    User user;
-
-    @GetMapping("/test")
-    public void test() {
-        System.out.println(user.getUsername());
+    @GetMapping("/send")
+    public String sendMessage(@RequestParam String message) throws InterruptedException {
 /*
         SingleMailSendObj singleMailSendObj = new SingleMailSendObj();
         singleMailSendObj.setMailContent("你好啊");
@@ -50,16 +54,19 @@ public class MessageController {
         singleMailSendObj.setRecipientMail("2018224980@qq.com");
         mailSendService.inParamCallSendMail(singleMailSendObj.getRecipientMail(), singleMailSendObj.getMailTheme(), singleMailSendObj.getMailContent(), singleMailSendObj.getAttachmentPathList());
 */
-/*
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        producerService.send(CommonStatic.TOPIC, "这是一条消息: "+sf.format(new Date()));
+        producerService.send(CommonStatic.TOPIC, sf.format(new Date())+"=>消息内容:"+message);
 
 //        订阅主题和 标签（ * 代表所有标签)下信息
         if(!flag) {
             consumerService.subscribe(CommonStatic.TOPIC, "*");
             flag = true;
         }
-*/
+        redisUtil.set("mq", null);
+        while(redisUtil.get("mq")==null) {
+            Thread.sleep(100);
+        }
+        return redisUtil.get("mq").toString();
     }
 
 
@@ -74,13 +81,34 @@ public class MessageController {
     @RequestMapping(value = "/message/sendMailBatch", method = RequestMethod.POST,
             consumes = "application/json")
     public void sendMailBatch(@RequestBody String json) {
-//        ResultDTO<BatchMailSendObj> resultDTO = new Gson().fromJson(
-//                json, new TypeToken<ResultDTO<BatchMailSendObj>>() {
-//                }.getType()
-//        );
-//        BatchMailSendObj batchMailSendObj = resultDTO.getData();
-//
-//        queueMailService.inParamCallSendMail(batchMailSendObj);
+
     }
 
+    @Autowired
+    private KafkaProducer producer;
+
+    @GetMapping("/kafka/send")
+    public String sendKafka() {
+        producer.send(new Message("test"));
+        return "kafka send ok";
+    }
+
+    @GetMapping("/kafka/task")
+    public String sendTask() {
+        producer.sendTask();
+        return "kafka send task";
+    }
+
+    @Autowired
+    private NettyClient nettyClient;
+
+    @GetMapping("/netty/send")
+    public String sendNetty(@RequestParam String msg) {
+        MessageBase.Message message = new MessageBase.Message()
+                .toBuilder().setCmd(MessageBase.Message.CommandType.NORMAL)
+                .setContent(msg)
+                .setRequestId(UUID.randomUUID().toString()).build();
+        nettyClient.sendMsg(message);
+        return "netty send ok";
+    }
 }

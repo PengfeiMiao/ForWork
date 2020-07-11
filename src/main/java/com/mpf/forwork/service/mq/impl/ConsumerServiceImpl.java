@@ -6,6 +6,7 @@ import com.mpf.forwork.messageobj.SingleMailSendObj;
 import com.mpf.forwork.service.MailSendService;
 import com.mpf.forwork.service.mq.ConsumerService;
 import com.mpf.forwork.staticobject.CommonStatic;
+import com.mpf.forwork.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.*;
@@ -31,6 +32,9 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     @Autowired
     private MailSendService mailSendService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 初始化消费者
@@ -58,16 +62,16 @@ public class ConsumerServiceImpl implements ConsumerService {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
                                                             ConsumeConcurrentlyContext context) {
-                System.out.printf("%s Receive Messages", Thread.currentThread().getName());
+                System.out.printf("Consumer=>%s Received", Thread.currentThread().getName());
 
                 for(Message msg:msgs) {
                     //消费者获取消息 这里只输出 不做后面逻辑处理
                     String body = new String(msg.getBody(), StandardCharsets.UTF_8);
-                    log.info("Consumer-获取消息-主题topic为={}, 消费消息为={}",msg.getTopic(),body);
+                    log.info("\n主题topic=>{}, 消费消息=>{}",msg.getTopic(),body);
+//                    return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+                    redisUtil.set("mq", body);
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-
                 }
-
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
