@@ -1,8 +1,10 @@
 package com.mpf.forwork.config;
 
+import com.mpf.forwork.entity.User;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
 
@@ -31,5 +33,12 @@ public class ApplicationConfig {
     @PostConstruct
     public void setParamsToStaticFileds() {
         serverPortOfApp = this.getServerPort();
+    }
+
+    @Bean
+    public User getUser(){
+        User user = new User();
+        user.setUsername("TEST");
+        return user;
     }
 }

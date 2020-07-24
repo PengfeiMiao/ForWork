@@ -71,6 +71,7 @@ public class MailSendServiceImpl implements MailSendService {
      */
     @Override
     public boolean sendMail() {
+        System.out.println("sendMail");
 
         // 构造mail session
         Properties props = System.getProperties();

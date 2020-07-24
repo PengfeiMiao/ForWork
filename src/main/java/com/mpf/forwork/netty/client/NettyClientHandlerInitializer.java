@@ -14,7 +14,7 @@ import io.netty.handler.timeout.IdleStateHandler;
  * @version 1.0
  * @date 2020/7/11 9:07
  */
-public class ClientHandlerInitializer extends ChannelInitializer<Channel> {
+public class NettyClientHandlerInitializer extends ChannelInitializer<Channel> {
 
     @Override
     protected void initChannel(Channel ch) throws Exception {

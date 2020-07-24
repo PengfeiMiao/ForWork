@@ -3,10 +3,13 @@ package com.mpf.forwork.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.io.*;
 
 /**
  * @author mpf
@@ -16,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @Scope(ConfigurableListableBeanFactory.SCOPE_SINGLETON)
-public class User implements Cloneable{
+public class User implements Cloneable, Serializable {
     @TableId(value="id",type= IdType.AUTO)
     private Integer id;
     private String username;
@@ -47,15 +50,24 @@ public class User implements Cloneable{
         System.out.println("bean销毁之后执行");
     }
 
+    @SneakyThrows
     @Override
-    public Object clone(){
-        User o = null;
+    public User clone() {
+        /*User o = null;
         try {
             o = (User)super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
         //上面已经可以做到浅层克隆了，深层克隆就需要解决对象的对象属性
-        return o;
+        return o;*/
+        //将对象写到流里
+        ByteArrayOutputStream bo=new ByteArrayOutputStream();
+        ObjectOutputStream oo=new ObjectOutputStream(bo);
+        oo.writeObject(this);
+        //从流里读出来
+        ByteArrayInputStream bi=new ByteArrayInputStream(bo.toByteArray());
+        ObjectInputStream oi=new ObjectInputStream(bi);
+        return(User)oi.readObject();
     }
 }

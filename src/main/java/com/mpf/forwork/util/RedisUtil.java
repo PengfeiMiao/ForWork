@@ -184,7 +184,7 @@ public class RedisUtil {
      * @param delta 要增加几(大于0)
      * @return
      */
-    public long incr(String key, long delta) {
+    public Long incr(String key, long delta) {
         if (delta < 0) {
             throw new RuntimeException("递增因子必须大于0");
         }
@@ -198,7 +198,7 @@ public class RedisUtil {
      * @param delta 要减少几(小于0)
      * @return
      */
-    public long decr(String key, long delta) {
+    public Long decr(String key, long delta) {
         if (delta < 0) {
             throw new RuntimeException("递减因子必须大于0");
         }
@@ -818,5 +818,22 @@ public class RedisUtil {
         return list;
     }
 
-
+    public Long getUidWithOutExpire(String key) {
+        try {
+            if (!hasKey(key)) {
+                //新增key-value
+                this.set(key, 1L);
+                return 1L;
+            } else {
+                return incr(key, 1L);
+            }
+        } catch (Exception e) {//redis宕机时采用uuid的方式生成唯一id
+            int first = new Random(10).nextInt(8) + 1;
+            int randNo = UUID.randomUUID().toString().hashCode();
+            if (randNo < 0) {
+                randNo = -randNo;
+            }
+            return Long.valueOf(first + String.format("%16d", randNo));
+        }
+    }
 }

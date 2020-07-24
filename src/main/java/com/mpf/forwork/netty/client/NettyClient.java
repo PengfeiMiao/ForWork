@@ -43,7 +43,7 @@ public class NettyClient  {
                 .remoteAddress(host, port)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.TCP_NODELAY, true)
-                .handler(new ClientHandlerInitializer());
+                .handler(new NettyClientHandlerInitializer());
         ChannelFuture future = bootstrap.connect();
         //客户端断线重连逻辑
         future.addListener((ChannelFutureListener) future1 -> {

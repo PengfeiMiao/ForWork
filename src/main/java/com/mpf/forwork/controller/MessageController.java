@@ -11,6 +11,7 @@ import com.mpf.forwork.service.MailSendService;
 import com.mpf.forwork.service.kafka.KafkaProducer;
 import com.mpf.forwork.service.mq.ConsumerService;
 import com.mpf.forwork.service.mq.ProducerService;
+import com.mpf.forwork.service.schedule.ScheduledTask;
 import com.mpf.forwork.staticobject.CommonStatic;
 import com.mpf.forwork.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static com.mpf.forwork.staticobject.CommonStatic.threadLocal;
 
@@ -38,6 +40,9 @@ public class MessageController {
 
     @Autowired
     private ConsumerService consumerService;
+
+//    @Autowired
+//    private ScheduledTask scheduledTask;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -96,6 +101,7 @@ public class MessageController {
     @GetMapping("/kafka/task")
     public String sendTask() {
         producer.sendTask();
+//        new ScheduledTask(10);
         return "kafka send task";
     }
 
@@ -110,5 +116,10 @@ public class MessageController {
                 .setRequestId(UUID.randomUUID().toString()).build();
         nettyClient.sendMsg(message);
         return "netty send ok";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
     }
 }

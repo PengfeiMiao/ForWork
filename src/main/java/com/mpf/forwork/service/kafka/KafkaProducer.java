@@ -2,17 +2,22 @@ package com.mpf.forwork.service.kafka;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
+import com.mpf.forwork.ForworkApplication;
 import com.mpf.forwork.messageobj.Message;
 import com.mpf.forwork.staticobject.CommonStatic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.Trigger;
+import org.springframework.scheduling.TriggerContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
@@ -56,6 +61,8 @@ public class KafkaProducer {
                 send(new Message(CommonStatic.MESSAGE));
             }
         }, 10, 5, TimeUnit.SECONDS);
+
+        service.shutdown();
     }
 }
 
