@@ -48,77 +48,7 @@ public class TaskController {
     @Test
     @GetMapping
     public void listTasks(){
-        /*
-        int[] nums = {1,2,1,3};
-        List<Integer> res = new ArrayList<>();
-        HashMap<Integer, Integer> map= new HashMap<>();
-        for (int num : nums) {
-            map.put(num, map.get(num) == null ? 1 : 2);
-        }
-        for(Map.Entry<Integer, Integer> entry: map.entrySet()){
-            if(entry.getValue().equals(1)){
-                res.add(entry.getKey());
-            }
-        }
-        System.out.println(new Gson().toJson(res.toArray(new Integer[res.size()])));
-        */
 
-        /* 10 --> 01010
-        取反 10101 加一 10110 得补码
-        再取反
-         */
-/*        char ch = '汉';
-        int[] nums = {9,7,9,7,5,5,1,2,5,1,7,9,1};
-//        return "任务列表";
-        int a = 0;
-        int b = 0;
-        for(int num : nums) {
-            System.out.println(Integer.toBinaryString(a)+","+Integer.toBinaryString(b)+","+Integer.toBinaryString(num));
-            System.out.println(Integer.toBinaryString((a ^ num))+"&"+Integer.toBinaryString(~b));
-            a = (a ^ num) & ~b;
-            System.out.println(Integer.toBinaryString((b ^ num))+"&"+Integer.toBinaryString(~a));
-            b = (b ^ num) & ~a;
-            System.out.println(Integer.toBinaryString(a)+","+Integer.toBinaryString(b));
-            System.out.println("______________");
-        }*/
-
-//        String number = "10";
-//        int num = Integer.parseInt(number);
-//        String str2 = "";
-//        //flag记录正负，负为true
-//        boolean flag = false;
-//        if(num<0){
-//            flag=true;
-//            num=-num;
-//        }
-//        while (num != 0) {
-//            //负则取反
-//            str2 = (flag ? 1-(num % 2) : num % 2) + str2;
-//            num = num / 2;
-//        }
-//        char[] ch = str2.toCharArray();
-//        //负则加一
-//        if(flag){
-//            int i=ch.length-1;
-//            while(i>=0){
-//                ch[i]=ch[i]=='1'?'0':'1';
-//                if(ch[i]=='1'){
-//                    break;
-//                }
-//                i--;
-//            }
-//            str2 = String.valueOf(ch);
-//
-//        }
-//        for(int j = 0;j<15-ch.length;j++){
-//            str2=(flag?"1":"0")+str2;
-//        }
-//
-//        System.out.println(str2+","+Integer.toBinaryString(10));
-//
-        //转二进制形式
-//        int num = -10;
-//        System.out.println(num>>>1&1);
 
     }
 
