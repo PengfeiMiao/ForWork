@@ -1,33 +1,36 @@
 # ForWork
-集成内容概要：
+一、集成内容概要：
 
-mybatis-plus
+1. mybatis-plus
 
-netty框架
+2. netty框架
 
-shiro+jwt 接口按角色访问控制
+3. shiro+jwt 接口按角色访问控制
 
-redis
+4. redis
 
-rocketmq
+5. rocketmq
 
-kafka
+6. kafka
 
-数据库铺底日志表结构
+7. 数据库铺底日志表结构
 
-aop编程
+8. aop编程
 
-定时任务scheduled
+9. 定时任务scheduled
 
-算法实现：
 
-redis分布式锁
+二、算法实现：
 
-redis生成唯一ID
+1. redis分布式锁
 
-redis限流器实现
+2. redis生成唯一ID
 
-skipList跳表
+3. redis限流器实现
 
-LRU最近最少使用算法
+4. skipList跳表
+
+5. LRU最近最少使用算法
+
+6. 算法题练习：test/Test.java
 
