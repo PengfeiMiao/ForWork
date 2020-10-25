@@ -1,0 +1,8 @@
+         ________ ____  _____  ________     ________ _____
+         |  ____// __ \|  __ \ |  ___/ \    / /  ____|  __ \
+         | |____| |  | | |__) || |____\ \  / /| |__  | |__) |
+         |  ___/| |  | |  _  / | |___/ \ \/ / |  __| |  _  /
+         | |    | |__| | | \ \ | |____  \  /  | |____| | \ \
+         |_|     \____/|_|  \_\|______|  \/   |______|_|  \_\
+
+MPF Integration Framework Of ForWork is Powered By Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}

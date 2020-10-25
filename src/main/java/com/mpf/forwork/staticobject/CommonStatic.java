@@ -1,5 +1,8 @@
 package com.mpf.forwork.staticobject;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+
 /**
  * @author mpf
  * @version 1.0
@@ -22,4 +25,6 @@ public class CommonStatic {
     };
 
     public static volatile String MESSAGE = "";
+
+    public static ConcurrentHashMap<String, ScheduledFuture<?>> rateLimiterMap = new ConcurrentHashMap<>();
 }

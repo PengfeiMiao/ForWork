@@ -1,17 +1,12 @@
 package com.mpf.forwork.controller;
 
-//import com.mpf.forwork.customObject.ResultDTO;
-import com.mpf.forwork.entity.User;
+import com.mpf.forwork.annotation.SysMsg;
 import com.mpf.forwork.messageobj.Message;
-import com.mpf.forwork.messageobj.SingleMailSendObj;
 import com.mpf.forwork.netty.client.NettyClient;
 import com.mpf.forwork.netty.protocol.protobuf.MessageBase;
-import com.mpf.forwork.service.MailSendService;
-//import com.mpf.forwork.service.QueueMailService;
 import com.mpf.forwork.service.kafka.KafkaProducer;
 import com.mpf.forwork.service.mq.ConsumerService;
 import com.mpf.forwork.service.mq.ProducerService;
-import com.mpf.forwork.service.schedule.ScheduledTask;
 import com.mpf.forwork.staticobject.CommonStatic;
 import com.mpf.forwork.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.ScheduledExecutorService;
 
-import static com.mpf.forwork.staticobject.CommonStatic.threadLocal;
 
 /**
- * @author xiaoyin
+ * @author mpf
  * @date 2018/12/13
  */
 @RestController
@@ -118,8 +111,20 @@ public class MessageController {
         return "netty send ok";
     }
 
+    /**
+     * 此接口用来测试指定方法的aop拦截以及消息推送
+     * @param id
+     * @param msg
+     * @return
+     */
     @GetMapping("/test")
-    public String test() {
-        return "test";
+    public String test(@RequestParam String id, @RequestParam String msg) {
+        return id+"@"+msg;
+    }
+
+    @SysMsg
+    @GetMapping("/test2")
+    public String test2(@RequestParam String id, @RequestParam String msg) {
+        return id+"@"+msg;
     }
 }

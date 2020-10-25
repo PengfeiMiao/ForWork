@@ -1,7 +1,9 @@
 package com.mpf.forwork.util;
 
+import com.mpf.forwork.service.schedule.DynamicTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -818,6 +820,24 @@ public class RedisUtil {
         return list;
     }
 
+    /**
+     * 判断数据类型
+     * @param key
+     * @param type
+     * @return
+     */
+    public boolean judgeType(String key, DataType type){
+        if(key == null || !hasKey(key)){
+            return false;
+        }
+        return redisTemplate.type(key) == type;
+    }
+
+    /**
+     * 获取唯一id
+     * @param key uid的键
+     * @return uid
+     */
     public Long getUidWithOutExpire(String key) {
         try {
             if (!hasKey(key)) {
@@ -834,6 +854,60 @@ public class RedisUtil {
                 randNo = -randNo;
             }
             return Long.valueOf(first + String.format("%16d", randNo));
+        }
+    }
+
+    /**
+     * redis限流: zset实现
+     * @param intervalTime 限流时间
+     * @return 是否限流
+     */
+    public boolean rateLimiter(String key, Long intervalTime) {
+        Long currentTime = System.currentTimeMillis();
+//        System.out.println(currentTime);
+        if(!judgeType(key, DataType.ZSET)){
+            del(key);
+        }
+        if (hasKey(key)) {
+            Integer count = redisTemplate.opsForZSet().rangeByScore(key, currentTime - intervalTime, currentTime).size();
+            System.out.println(key + ": upper limit => " + count);
+            if (count != null && count > 5) {
+                return false;
+            }
+        }
+        redisTemplate.opsForZSet().add(key, getUidWithOutExpire("UUID"), currentTime);
+        return true;
+    }
+
+    @Autowired
+    private DynamicTask dynamicTask;
+    /**
+     * redis限流: 令牌桶
+     * @param key 键
+     * @return 是否限流
+     */
+    public boolean rateLimiter2(String key, int limit) {
+        if (!judgeType(key, DataType.LIST)) {
+            del(key);
+        }
+        boolean flag = dynamicTask.startCron(key, limit);
+        Object result = redisTemplate.opsForList().leftPop(key);
+        return flag || result != null;
+    }
+
+    /**
+     * 往令牌桶中添加UUID，只为保证唯一性
+     * @param key
+     * @param limit
+     */
+    public void pushUUID(String key, int limit) {
+        try {
+            System.out.println(key + ": upper limit => " + lGetListSize(key));
+            if (lGetListSize(key) < limit) {
+                lSet(key, getUidWithOutExpire("UUID"));
+            }
+        }catch (Exception e){
+            //e.printStackTrace();
         }
     }
 }

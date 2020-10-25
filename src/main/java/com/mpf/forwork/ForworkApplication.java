@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.EnableCaching;
 @MapperScan("com.mpf.forwork.mapper")
 public class ForworkApplication {
 
-
     public static void main(String[] args) {
         SpringApplication.run(ForworkApplication.class, args);
     }

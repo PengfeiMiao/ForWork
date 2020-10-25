@@ -29,7 +29,7 @@ public class KafkaReceiver {
             //logger.info("----------------- message =" + message);
             Gson gson = new GsonBuilder().create();
             Message msg = gson.fromJson(message.toString(), Message.class);
-            System.out.println("kafka-content => "+msg.getMsg());
+            logger.info("kafka received => {}", msg.getMsg());
         }
     }
 }

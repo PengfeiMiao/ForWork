@@ -21,7 +21,7 @@ import java.util.*;
  * @date 2020/6/18 11:38
  */
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/redis")
 public class RedisController {
     /**
      * 调用数据库日志工厂方法将日志记录到数据库

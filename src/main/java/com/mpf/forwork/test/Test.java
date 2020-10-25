@@ -57,7 +57,7 @@ public class Test implements Serializable {
     public static ExecutorService newFixedThreadPool(int nThreads) {
         return new ThreadPoolExecutor(nThreads, nThreads,
                 0L, TimeUnit.MILLISECONDS,
-                new ArrayBlockingQueue<Runnable>(nThreads),//new LinkedBlockingQueue<Runnable>()
+                new ArrayBlockingQueue<Runnable>(nThreads), //new LinkedBlockingQueue<Runnable>()
                 new NameThreadFactory(),
                 new ThreadPoolExecutor.DiscardPolicy());
     }
@@ -106,7 +106,7 @@ public class Test implements Serializable {
 //        int count = 4;
 //        randomExtract(array, count);
 
-        //BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(2);
+//        BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(2);
 
         Scanner in = new Scanner(System.in);
         while (in.hasNextInt()) {
@@ -140,6 +140,7 @@ public class Test implements Serializable {
 //        sortNum("asdfsdffwdef111sdf");
 //        circleCount(4);
     }
+
     public static void delete(int d, List<TreeNode> nodes, List<TreeNode> deleted){
         for(TreeNode node: nodes){
             if (node.getId()==d){
@@ -297,11 +298,6 @@ public class Test implements Serializable {
         }
         System.out.println(new Gson().toJson(res.toArray(new Integer[res.size()])));
 
-        /* 10 --> 01010
-        取反 10101 加一 10110 得补码
-        再取反
-         */
-
 //         int[] nums = {9, 7, 9, 7, 5, 5, 1, 2, 5, 1, 7, 9, 1};
 //         int a = 0;
 //         int b = 0;
@@ -315,6 +311,12 @@ public class Test implements Serializable {
 //             System.out.println("______________");
 //         }
 
+        /*
+        求-10二进制：
+        10 --> 01010
+        取反 10101 加一得补码 10110
+        再取反 11001
+         */
         String number = "10";
         int num = Integer.parseInt(number);
         String str2 = "";
@@ -353,8 +355,123 @@ public class Test implements Serializable {
         int num2 = -10;
         System.out.println(num2>>>1&1);
     }
+
+    /**
+     * 括号合法检测（考察栈）
+     * 测试用例：
+     * 2348(273[384]9423)83743
+     * (123)[456]([1235]67)]
+     *
+     * @param s
+     * @return
+     */
+    public static boolean func(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (int i = 0; i < s.length(); i++) {
+            char tmp = s.charAt(i);
+            if (tmp == '(' || tmp == '[') {
+                stack.push(tmp);
+            }
+            if (tmp == ')' || tmp == ']') {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char c = stack.pop();
+                if ((tmp == ')' && c != '(') || (tmp == ']' && c != '[')) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    /**
+     * 判断是否为二叉树的子树
+     * @param A
+     * @param B
+     * @return
+     */
+    public static boolean isSubStructure(BinaryTreeNode A, BinaryTreeNode B) {
+        if(A == null || B == null){
+            return false;
+        }
+        if(A.val == B.val){
+            return isSubStructure_helper(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B);
+        }
+        return isSubStructure(A.left, B) || isSubStructure(A.right, B);
+    }
+    public static boolean isSubStructure_helper(BinaryTreeNode A, BinaryTreeNode B){
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        if (A == null || B == null) {
+            return false;
+        }
+        System.out.println("A: "+A.val+", B: "+B.val);
+
+        if(A.val != B.val){
+            return false;
+        }
+        if (B.left == null && B.right == null) {
+            return true;
+        }
+        if(B.left == null){
+            return isSubStructure_helper(A.right, B.right);
+        }
+        if(B.right == null){
+            return isSubStructure_helper(A.left, B.left);
+        }
+        return isSubStructure_helper(A.left, B.left) && isSubStructure_helper(A.right, B.right);
+    }
+
+
+    public static int cnt = 0;
+    public static int res = 0;
+    public static int kthLargest(BinaryTreeNode root, int k) {
+        /**
+         * 考点=>中序遍历
+         * 非递归实现 —— 栈
+         */
+        Deque<BinaryTreeNode> stack = new ArrayDeque<>();
+        while (root != null || !stack.isEmpty()) {
+            if (root != null) {
+                stack.push(root);
+                root = root.right;
+            } else {
+                root = stack.pop();
+                if (++cnt == k) {
+                    return root.val;
+                }
+                root = root.left;
+            }
+        }
+        //return -1;
+
+        /**
+         * 递归实现
+         */
+        kthLargest_helper(root, k);
+        return res;
+    }
+
+    public static void kthLargest_helper(BinaryTreeNode node, int k) {
+        if (node == null) {
+            return;
+        }
+        if (node.right != null) {
+            kthLargest_helper(node.right, k);
+        }
+        if (++cnt == k) {
+            res = node.val;
+        }
+        if (node.left != null) {
+            kthLargest_helper(node.left, k);
+        }
+    }
+
 }
 
+/**
+ * 多叉树节点
+ */
 class TreeNode{
     private int id;
     private int parentId;
@@ -369,6 +486,19 @@ class TreeNode{
         return this.parentId;
     }
 
+}
+
+/**
+ * 二叉树节点
+ */
+class BinaryTreeNode {
+    int val;
+    BinaryTreeNode left;
+    BinaryTreeNode right;
+
+    BinaryTreeNode(int x) {
+        val = x;
+    }
 }
 
 class Task implements Runnable{
@@ -427,13 +557,7 @@ class MainClass {
 
         Template template = new Template();
         final String sql="String";
-        StringCallback callback=new StringCallback(){
-            @Override
-            public Object doWithString(String test) {
-                return template.handle(test, sql);
-            }
-
-        };
+        StringCallback callback= test -> template.handle(test, sql);
         String res = (String)template.execute(callback);
         System.out.println("res:"+res);
 

@@ -35,7 +35,7 @@ public class NettyClient  {
         socketChannel.writeAndFlush(message);
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void start()  {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)

@@ -1,6 +1,5 @@
 package com.mpf.forwork.service.schedule;
 
-import com.mpf.forwork.ForworkApplication;
 import com.mpf.forwork.messageobj.Message;
 import com.mpf.forwork.service.kafka.KafkaProducer;
 import com.mpf.forwork.staticobject.CommonStatic;
@@ -23,9 +22,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 1.0
  * @date 2020/7/12 22:26
  */
-@Lazy(false)
-@EnableScheduling
-@Component
+//@Lazy(false)
+//@EnableScheduling
+//@Component
 public class ScheduledTask implements SchedulingConfigurer {
 
     private static Logger logger = LoggerFactory.getLogger(ScheduledTask.class);

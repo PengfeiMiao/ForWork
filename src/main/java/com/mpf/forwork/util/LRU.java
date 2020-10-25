@@ -11,14 +11,14 @@ import java.util.Map;
  */
 public class LRU<K,V> {
 
-    private static final float HASH_LOAD_FACTORY = 0.75f;
+    private static final float HASH_LOAD_FACTOR = 0.75f;
     private LinkedHashMap<K,V> map;
     private int cacheSize;
 
     public LRU(int cacheSize) {
         this.cacheSize = cacheSize;
-        int capacity = (int)Math.ceil(cacheSize / HASH_LOAD_FACTORY) + 1;
-        map = new LinkedHashMap<K,V>(capacity, HASH_LOAD_FACTORY, true){
+        int capacity = (int)Math.ceil(cacheSize / HASH_LOAD_FACTOR) + 1;
+        map = new LinkedHashMap<K,V>(capacity, HASH_LOAD_FACTOR, true){
             private static final long serialVersionUID = 1;
 
             @Override
@@ -28,10 +28,10 @@ public class LRU<K,V> {
         };
     }
 
-    public LRU(int cacheSize, int factory){
+    public LRU(int cacheSize, int factor){
         this.cacheSize = cacheSize;
-        int capacity = (int)Math.ceil(cacheSize / factory) +1;
-        map = new LinkedHashMap<K,V>(capacity, factory, true){
+        int capacity = (int)Math.ceil(cacheSize / factor) +1;
+        map = new LinkedHashMap<K,V>(capacity, factor, true){
             private static final long serialVersionUID = 2;
 
             @Override

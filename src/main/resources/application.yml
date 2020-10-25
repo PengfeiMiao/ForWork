@@ -18,7 +18,7 @@ spring:
     # 初始化大小，最小，最大
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://116.62.202.107:3306/forwork?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+      url: jdbc:mysql://10.50.5.122:3306/forwork?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
       username: root
       password: 123456
       initialSize: 5
@@ -55,7 +55,7 @@ spring:
         #============== kafka ===================
         # 指定kafka 代理地址，可以多个
   kafka:
-    bootstrap-servers: 116.62.202.107:9092
+    bootstrap-servers: 116.62.202.107:9092, 10.50.2.83:19092
     #=============== provider  =======================
     producer:
       retries: 0
