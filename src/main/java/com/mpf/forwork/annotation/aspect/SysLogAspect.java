@@ -1,6 +1,7 @@
 package com.mpf.forwork.annotation.aspect;
 
 import com.mpf.forwork.staticobject.CommonStatic;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,11 +16,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author: xy
  * @create: 2019-05-15
  */
+@Slf4j
 @Component
 @Aspect
 public class SysLogAspect {
 
-    
     @Pointcut("@annotation(com.mpf.forwork.annotation.SysLogs)")
     public void log() {
     }
@@ -32,6 +33,8 @@ public class SysLogAspect {
         if (request == null) {
             return;
         }
+
+        log.info("names:{}, k-v:{}", request.getParameterNames(), request.getParameterMap());
 
         ThreadContext.put("UserId", "userCode");
         ThreadContext.put("UserName","userName");

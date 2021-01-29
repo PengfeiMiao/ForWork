@@ -1,14 +1,13 @@
 package com.mpf.forwork.annotation.aspect;
 
 import com.mpf.forwork.util.RedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,8 +19,8 @@ import java.io.IOException;
 
 @Component
 @Aspect
+@Slf4j
 public class SysLimitsAspect {
-    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RedisUtil redisUtil;

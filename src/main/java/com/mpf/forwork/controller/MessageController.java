@@ -1,19 +1,23 @@
 package com.mpf.forwork.controller;
 
+import com.mpf.forwork.annotation.SysLogs;
 import com.mpf.forwork.annotation.SysMsg;
 import com.mpf.forwork.messageobj.Message;
 import com.mpf.forwork.netty.client.NettyClient;
 import com.mpf.forwork.netty.protocol.protobuf.MessageBase;
+import com.mpf.forwork.service.TestService;
 import com.mpf.forwork.service.kafka.KafkaProducer;
 import com.mpf.forwork.service.mq.ConsumerService;
 import com.mpf.forwork.service.mq.ProducerService;
 import com.mpf.forwork.staticobject.CommonStatic;
 import com.mpf.forwork.util.RedisUtil;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -111,20 +115,29 @@ public class MessageController {
         return "netty send ok";
     }
 
+    @Autowired
+    TestService testService;
+
     /**
      * 此接口用来测试指定方法的aop拦截以及消息推送
      * @param id
      * @param msg
      * @return
      */
+    @SysLogs
     @GetMapping("/test")
     public String test(@RequestParam String id, @RequestParam String msg) {
-        return id+"@"+msg;
+        return testService.test(id+"@"+msg);
+    }
+
+    @Data
+    class MyObject{
+        String test;
     }
 
     @SysMsg
-    @GetMapping("/test2")
-    public String test2(@RequestParam String id, @RequestParam String msg) {
+    @PostMapping("/test2")
+    public String test2(@RequestParam String id, @RequestParam String msg, @RequestBody MyObject body) {
         return id+"@"+msg;
     }
 }

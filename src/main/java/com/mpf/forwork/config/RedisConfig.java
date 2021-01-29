@@ -45,6 +45,9 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Value("${redis.port}")
     private Integer port;
 
+    @Value("${redis.password}")
+    private String password;
+
     @Value("${redis.timeout}")
     private Integer timeout;
 
@@ -124,6 +127,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisStandaloneConfiguration.setHostName(hostName);
         //设置redis的服务的端口号
         redisStandaloneConfiguration.setPort(port);
+        redisStandaloneConfiguration.setPassword(password);
         //获得指定的连接池构造器
         JedisClientConfiguration.JedisPoolingClientConfigurationBuilder jpcb =
                 JedisClientConfiguration.builder().usePooling().poolConfig(jedisPoolConfig);
