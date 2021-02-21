@@ -1,0 +1,78 @@
+server:
+  port: 8773
+  servlet:
+    context-path: /website
+
+properties:
+  swagger:
+    enabled: true
+    resource:
+
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  application:
+    name: website
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置启动自动执行sql
+    schema: classpath*:sql/log.sql
+    sql-script-encoding: utf-8
+    platform: mysql
+    initialization-mode: never
+    # 配置Druid的其他参数，以下配置必须增加一个配置文件才能有效
+    # 初始化大小，最小，最大
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/valuelink?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+      username: valuelink
+      password: myegoo3466
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      # 获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat, wall
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # 合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: admin
+        reset-enable: true
+        allow: 127.0.0.1
+        url-pattern: /druid/*
+  session:
+    store-type: redis
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: # egoo
+    jedis:
+      pool:
+        max-active: 16
+        max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 16
+        min-idle: 0
+    timeout: 5000
+  #    cluster:
+  #        nodes: redis1.server.group.io:6379,redis2.server.group.io:6380,redis3.server.group.io:6379,redis4.server.group.io:6380,redis5.server.group.io:6379,redis6.server.group.io:6380

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        li {
+            float: left;
+        }
+
+        a:link, a:visited {
+            display: block;
+            width: 120px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background-color: #bebebe;
+            text-align: center;
+            padding: 4px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        a:hover, a:active {
+            background-color: #cc0000;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .box {
+            width: 800px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .box ul {
+            width: 800px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .box ul li {
+            width: 100%;
+            height: auto;
+            float: left;
+            text-align: center;
+        }
+
+    </style>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/index.js"></script>
+</head>
+
+<body>
+<ul class="menu">
+    <li><a href="#home" onclick="show('v0')">Home</a></li>
+    <li><a href="#news" onclick="show('v1')">News</a></li>
+    <li><a href="#contact" onclick="show('v2')">Contact</a></li>
+    <li><a href="#about" onclick="show('v3')">About</a></li>
+</ul>
+<div id="v0" class="box" style="display: block">
+    <ul>
+        <li>
+            <div style="position: relative; width: 500px;">
+                <img src="./img/blog2.jpg" width="500"  alt="">
+                <span style="position: absolute; top: 0; left: 0;">添加文字...添加文字...添加文字...</span>
+            </div>
+        </li>
+        <li>
+            <div style="position: relative; width: 500px;">
+                <img src="./img/blog4.jpg" width="500"  alt="">
+                <span style="position: absolute; top: 0; left: 0;">添加文字...添加文字...添加文字...</span>
+            </div>
+        </li>
+        <li>
+            <div style="position: relative; width: 500px;">
+                <img src="./img/blog6.jpg" width="500"  alt="">
+                <span style="position: absolute; top: 0; left: 0;">添加文字...添加文字...添加文字...</span>
+            </div>
+        </li>
+    </ul>
+</div>
+<div id="v1" class="view">
+    页面1
+</div>
+<div id="v2" class="view">
+    页面2
+</div>
+<div id="v3" class="view">
+    页面3
+</div>
+</body>
+</html>

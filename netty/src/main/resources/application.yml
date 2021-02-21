@@ -1,0 +1,7 @@
+server:
+  port: 8772
+  servlet:
+    context-path: /netty
+netty:
+  host: localhost
+  port: 8989
