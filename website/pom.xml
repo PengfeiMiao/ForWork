@@ -78,13 +78,77 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <!--dev环境Profile -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+        </profile>
+        <!-- prod环境Profile -->
+        <profile>
+            <!--不同环境Profile的唯一id-->
+            <id>release</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- 打包插件 manifest定义 不分离lib库可以不定义该步骤 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>${maven.jar.plugin}</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <!-- 项目启动类 -->
+                                    <mainClass>com.egoo.mcc.dbsrv.Application</mainClass>
+                                    <!-- 自动添加到 classpath下的依赖包目录前缀 -->
+                                    <classpathPrefix>../lib</classpathPrefix>
+                                    <addClasspath>true</addClasspath>
+                                </manifest>
+                            </archive>
+                            <includes>
+                                <!-- 只打包指定目录的文件 其他资源文件将不会打包 -->
+                                <!--<include>com/egoo/psecurity/web/**</include>-->
+                            </includes>
+                        </configuration>
+                    </plugin>
+
+                    <!-- RePackage -->
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <!-- 项目启动jar包中排除依赖包 -->
+                                <include>
+                                    <groupId>non-exists</groupId>
+                                    <artifactId>non-exists</artifactId>
+                                </include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+
+                    <!-- MD5 -->
+                    <plugin>
+                        <groupId>net.ju-n.maven.plugins</groupId>
+                        <artifactId>checksum-maven-plugin</artifactId>
+                    </plugin>
+
+                    <!-- Assembly -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

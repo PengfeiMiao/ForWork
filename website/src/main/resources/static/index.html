@@ -1,101 +1,52 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        li {
-            float: left;
-        }
-
-        a:link, a:visited {
-            display: block;
-            width: 120px;
-            font-weight: bold;
-            color: #FFFFFF;
-            background-color: #bebebe;
-            text-align: center;
-            padding: 4px;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        a:hover, a:active {
-            background-color: #cc0000;
-        }
-
-        .view {
-            display: none;
-        }
-
-        .box {
-            width: 800px;
-            height: auto;
-            margin: 0 auto;
-        }
-
-        .box ul {
-            width: 800px;
-            height: auto;
-            margin: 0 auto;
-        }
-
-        .box ul li {
-            width: 100%;
-            height: auto;
-            float: left;
-            text-align: center;
-        }
-
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
     <script src="./js/jquery.min.js"></script>
+    <script src="./layui/layui.js"></script>
     <script src="./js/index.js"></script>
 </head>
-
 <body>
-<ul class="menu">
-    <li><a href="#home" onclick="show('v0')">Home</a></li>
-    <li><a href="#news" onclick="show('v1')">News</a></li>
-    <li><a href="#contact" onclick="show('v2')">Contact</a></li>
-    <li><a href="#about" onclick="show('v3')">About</a></li>
+
+<ul class="layui-nav" lay-filter="test">
+    <li class="layui-nav-item"><a property="page1.html">最新活动</a></li>
+    <li class="layui-nav-item layui-this">
+        <a href="javascript:;">产品</a>
+        <dl class="layui-nav-child">
+            <dd><a property="home.html">选项1</a></dd>
+            <dd><a>选项2</a></dd>
+            <dd><a>选项3</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a property="page2.html">大数据</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">解决方案</a>
+        <dl class="layui-nav-child">
+            <dd><a>移动模块</a></dd>
+            <dd><a>后台模版</a></dd>
+            <dd><a>选中项</a></dd>
+            <dd><a>电商平台</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a>社区</a></li>
 </ul>
-<div id="v0" class="box" style="display: block">
-    <ul>
-        <li>
-            <div style="position: relative; width: 500px;">
-                <img src="./img/blog2.jpg" width="500"  alt="">
-                <span style="position: absolute; top: 0; left: 0;">添加文字...添加文字...添加文字...</span>
-            </div>
-        </li>
-        <li>
-            <div style="position: relative; width: 500px;">
-                <img src="./img/blog4.jpg" width="500"  alt="">
-                <span style="position: absolute; top: 0; left: 0;">添加文字...添加文字...添加文字...</span>
-            </div>
-        </li>
-        <li>
-            <div style="position: relative; width: 500px;">
-                <img src="./img/blog6.jpg" width="500"  alt="">
-                <span style="position: absolute; top: 0; left: 0;">添加文字...添加文字...添加文字...</span>
-            </div>
-        </li>
-    </ul>
-</div>
-<div id="v1" class="view">
-    页面1
-</div>
-<div id="v2" class="view">
-    页面2
-</div>
-<div id="v3" class="view">
-    页面3
-</div>
+
+<iframe id="iframeMain" src="home.html" style="width: 100%; height: 100%"></iframe>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+        // element.render('nav','test');
+        element.on('nav(test)', function(elem){
+            console.log(elem); //得到当前点击的DOM对象
+            $("#iframeMain").attr("src",$(this).attr("property"));
+        });
+    });
+</script>
+
+
 </body>
 </html>
