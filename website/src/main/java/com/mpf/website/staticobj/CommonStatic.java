@@ -7,8 +7,6 @@ package com.mpf.website.staticobj;
  */
 public class CommonStatic {
 
-    public static final String OPERATION_SYSTEM_USER_HOME = "";
-
-    public static final String APPLICATION_NAME = "";
+    public static final String APPLICATION_NAME = "website";
 
 }

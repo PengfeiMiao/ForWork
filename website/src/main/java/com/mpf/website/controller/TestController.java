@@ -3,21 +3,17 @@ package com.mpf.website.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.mpf.website.entity.rest.RestResponse;
 import com.mpf.website.service.TestService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+
 
 /**
  * @author: MiaoPengfei
@@ -27,6 +23,8 @@ import java.util.Objects;
  */
 @Slf4j
 @RestController
+@RequestMapping("/test")
+@Api(value="测试接口", tags="测试接口")
 public class TestController {
 
     @Autowired
@@ -48,14 +46,15 @@ public class TestController {
         return response;
     }
 
+    @ApiOperation(value = "editormd图片上传", notes = "图片上传")
     @PostMapping("/saveImage")
     @ResponseBody
     //接收图片的参数名需要为"editormd-image-file"
-    public JSONObject saveImage(@RequestParam("editormd-image-file") MultipartFile file, HttpServletRequest request){
+    public JSONObject saveImage(@ApiParam("图片文件")@RequestParam("editormd-image-file") MultipartFile file, HttpServletRequest request){
 
         JSONObject jsonObject = new JSONObject();
         /** 从request中获取 */
-        file = ((MultipartHttpServletRequest) request).getFile("file");
+//        file = ((MultipartHttpServletRequest) request).getFile("file");
         String path = testService.uploadFile(file);
         if (StringUtils.isBlank(path)){
             jsonObject.put("success", 0);//图片上传失败的信息码

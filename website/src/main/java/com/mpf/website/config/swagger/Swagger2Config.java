@@ -35,7 +35,7 @@ public class Swagger2Config {
                 .forCodeGeneration(true)
                 .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mpf.forwork.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.mpf.website.controller"))
                 .build()
                 .apiInfo(serverApiInfo());
     }

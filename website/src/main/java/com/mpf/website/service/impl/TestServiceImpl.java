@@ -57,7 +57,7 @@ public class TestServiceImpl implements TestService {
         //拼接文件名
         String timeStr = DateUtil.dateTime2String(new Date(), "yyyyMMddHHmmss");
         String filename = file.getOriginalFilename() + "_" + timeStr + ("." + file.getContentType().split("/")[1]);
-        String localPath = System.getProperty("user.dir");
+        String localPath = System.getProperty("user.dir") + File.separator + "upload";
         File tempFileParentFolder = new File(localPath);
         if (!tempFileParentFolder.exists()) {
             tempFileParentFolder.mkdirs();
@@ -74,8 +74,8 @@ public class TestServiceImpl implements TestService {
 
     public static void main(String[] args) throws FileNotFoundException {
         String str = System.getProperty("user.dir");
-        String path = ResourceUtils.getURL("classpath:").getPath();
-        log.info(str+"--"+path);
+//        String path = ResourceUtils.getURL("classpath:").getPath();
+        log.info("path:{}",str);
     }
 
 }
