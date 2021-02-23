@@ -1,6 +1,7 @@
 $(document).ready(function () {
 })
 
+
 function test() {
 
     let columns = [], column = {}, param = {};

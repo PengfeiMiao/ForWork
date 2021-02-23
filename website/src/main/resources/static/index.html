@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>开始使用layui</title>
+    <title>骇客笔记</title>
     <link rel="stylesheet" href="./layui/css/layui.css">
     <script src="./js/jquery.min.js"></script>
     <script src="./layui/layui.js"></script>
@@ -11,39 +10,51 @@
 </head>
 <body>
 
-<ul class="layui-nav" lay-filter="test">
-    <li class="layui-nav-item"><a property="page1.html">最新活动</a></li>
+<ul class="layui-nav layui-bg-green" lay-filter="test">
     <li class="layui-nav-item layui-this">
-        <a href="javascript:;">产品</a>
-        <dl class="layui-nav-child">
-            <dd><a property="home.html">选项1</a></dd>
-            <dd><a>选项2</a></dd>
-            <dd><a>选项3</a></dd>
-        </dl>
+        <a href="javascript:;" property="home.html">首页</a>
     </li>
-    <li class="layui-nav-item"><a property="page2.html">大数据</a></li>
     <li class="layui-nav-item">
-        <a href="javascript:;">解决方案</a>
+        <a href="javascript:;" property="article.html">文章管理</a>
+    </li>
+    <li class="layui-nav-item"><a href="javascript:;" property="line.html">时间线</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">关于</a>
         <dl class="layui-nav-child">
-            <dd><a>移动模块</a></dd>
-            <dd><a>后台模版</a></dd>
-            <dd><a>选中项</a></dd>
-            <dd><a>电商平台</a></dd>
+            <dd><a property="page2.html">照片墙</a></dd>
+            <dd><a>留言区</a></dd>
+            <dd><a>相关网站</a></dd>
         </dl>
     </li>
-    <li class="layui-nav-item"><a>社区</a></li>
+    <li class="layui-nav-item" style="float: right; right: 0;">
+        <a href="javascript:;"><img src="./img/team1.png" class="layui-nav-img" alt="">我</a>
+        <dl class="layui-nav-child">
+            <dd><a>修改信息</a></dd>
+            <dd><a>安全管理</a></dd>
+            <dd><a>退出</a></dd>
+        </dl>
+    </li>
 </ul>
 
-<iframe id="iframeMain" src="home.html" style="width: 100%; height: 100%"></iframe>
+<iframe id="iframeMain" src="home.html" style="overflow:visible;"
+        scrolling="no" height="100%" width="100%"></iframe>
 <script>
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
     layui.use('element', function(){
         var element = layui.element;
-        // element.render('nav','test');
+        element.render('nav','test');
         element.on('nav(test)', function(elem){
             console.log(elem); //得到当前点击的DOM对象
-            $("#iframeMain").attr("src",$(this).attr("property"));
+            $("#iframeMain")
+                .attr("src",$(this).attr("property"))
         });
+    });
+
+
+    $("#iframeMain").load(function() {
+        var mainHeight = $(this).contents().find("body").height() + 20;
+        console.log(mainHeight)
+        $(this).height(mainHeight);
     });
 </script>
 

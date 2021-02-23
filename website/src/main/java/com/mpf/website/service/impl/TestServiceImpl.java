@@ -1,15 +1,19 @@
 package com.mpf.website.service.impl;
 
+import com.mpf.website.staticobj.CommonStatic;
 import com.mpf.website.service.TestService;
+import com.mpf.website.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 
 /**
  * @Author: MiaoPengfei
@@ -46,4 +50,32 @@ public class TestServiceImpl implements TestService {
         }
         return str;
     }
+
+    @Override
+    public String uploadFile(MultipartFile file) {
+        //上传后保存的文件名(需要防止图片重名导致的文件覆盖)
+        //拼接文件名
+        String timeStr = DateUtil.dateTime2String(new Date(), "yyyyMMddHHmmss");
+        String filename = file.getOriginalFilename() + "_" + timeStr + ("." + file.getContentType().split("/")[1]);
+        String localPath = System.getProperty("user.dir");
+        File tempFileParentFolder = new File(localPath);
+        if (!tempFileParentFolder.exists()) {
+            tempFileParentFolder.mkdirs();
+        }
+        String filepath = localPath + File.separator + filename;
+        try {
+            file.transferTo(new File(filepath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return filepath;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        String str = System.getProperty("user.dir");
+        String path = ResourceUtils.getURL("classpath:").getPath();
+        log.info(str+"--"+path);
+    }
+
 }

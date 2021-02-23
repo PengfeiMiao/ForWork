@@ -9,6 +9,8 @@ properties:
     resource:
 
 spring:
+  resources:
+    static-locations: classpath:static/,file:static/
   mvc:
     view:
       prefix: /
@@ -26,7 +28,7 @@ spring:
     # 初始化大小，最小，最大
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/valuelink?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://localhost:3306/valuelink?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
       username: valuelink
       password: myegoo3466
       initialSize: 5
