@@ -18,7 +18,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     # 配置启动自动执行sql
-    schema: classpath*:sql/log.sql
+    schema: classpath*:sql/init.sql
     sql-script-encoding: utf-8
     platform: mysql
     initialization-mode: always

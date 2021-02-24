@@ -2,7 +2,7 @@ package com.mpf.website.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mpf.website.entity.rest.RestResponse;
-import com.mpf.website.service.TestService;
+import com.mpf.website.service.test.TestService;
 import com.mpf.website.staticobj.CommonStatic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,12 +1,9 @@
-package com.mpf.website.service.impl;
+package com.mpf.website.service.test.impl;
 
-import com.mpf.website.staticobj.CommonStatic;
-import com.mpf.website.service.TestService;
+import com.mpf.website.service.test.TestService;
 import com.mpf.website.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;

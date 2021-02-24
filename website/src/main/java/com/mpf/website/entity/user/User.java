@@ -21,15 +21,18 @@ public class User{
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private String username;
+    private String name;
     private String password;
     private String role;
+    private Integer status;
+    private Integer isLogin;
+    private String lastLogin;
 
     public User() {
     }
 
     public User(Integer id, String name) {
         this.id = id;
-        this.username = name;
+        this.name = name;
     }
 }
