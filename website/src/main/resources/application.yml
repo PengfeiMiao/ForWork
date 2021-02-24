@@ -9,8 +9,6 @@ properties:
     resource:
 
 spring:
-  resources:
-    static-locations: classpath:static/,file:static/
   mvc:
     view:
       prefix: /
@@ -23,13 +21,13 @@ spring:
     schema: classpath*:sql/log.sql
     sql-script-encoding: utf-8
     platform: mysql
-    initialization-mode: never
+    initialization-mode: always
     # 配置Druid的其他参数，以下配置必须增加一个配置文件才能有效
     # 初始化大小，最小，最大
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/valuelink?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-      username: valuelink
+      url: jdbc:mysql://localhost:3306/forwork?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+      username: root
       password: myegoo3466
       initialSize: 5
       minIdle: 5

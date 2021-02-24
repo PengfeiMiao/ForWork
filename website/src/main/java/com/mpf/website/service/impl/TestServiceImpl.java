@@ -56,7 +56,11 @@ public class TestServiceImpl implements TestService {
         //上传后保存的文件名(需要防止图片重名导致的文件覆盖)
         //拼接文件名
         String timeStr = DateUtil.dateTime2String(new Date(), "yyyyMMddHHmmss");
-        String filename = file.getOriginalFilename() + "_" + timeStr + ("." + file.getContentType().split("/")[1]);
+        String filename = file.getOriginalFilename();
+        if (filename != null && filename.contains(".")) {
+            filename = filename.split("\\.")[0];
+        }
+        filename += "_" + timeStr + ("." + file.getContentType().split("/")[1]);
         String localPath = System.getProperty("user.dir") + File.separator + "upload";
         File tempFileParentFolder = new File(localPath);
         if (!tempFileParentFolder.exists()) {
@@ -69,13 +73,13 @@ public class TestServiceImpl implements TestService {
             e.printStackTrace();
             return "";
         }
-        return filepath;
+        return filename;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
         String str = System.getProperty("user.dir");
 //        String path = ResourceUtils.getURL("classpath:").getPath();
-        log.info("path:{}",str);
+        log.info("path:{}", str);
     }
 
 }
