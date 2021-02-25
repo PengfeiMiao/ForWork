@@ -73,10 +73,4 @@ public class TestServiceImpl implements TestService {
         return filename;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        String str = System.getProperty("user.dir");
-//        String path = ResourceUtils.getURL("classpath:").getPath();
-        log.info("path:{}", str);
-    }
-
 }

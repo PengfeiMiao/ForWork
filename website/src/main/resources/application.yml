@@ -7,7 +7,6 @@ properties:
   swagger:
     enabled: true
     resource:
-
 spring:
   mvc:
     view:
@@ -76,3 +75,6 @@ spring:
     timeout: 5000
   #    cluster:
   #        nodes: redis1.server.group.io:6379,redis2.server.group.io:6380,redis3.server.group.io:6379,redis4.server.group.io:6380,redis5.server.group.io:6379,redis6.server.group.io:6380
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8

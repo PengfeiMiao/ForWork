@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.mpf.website.dto.ArticleDTO;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class Article {
     @TableId(value = "id", type = IdType.AUTO)
@@ -16,8 +18,8 @@ public class Article {
     private Integer visit;
     private Integer comment;
     private Integer status;
-    private String createTime;
-    private Integer updateTime;
+    private Date createTime;
+    private Date updateTime;
 
     public Article(){}
 

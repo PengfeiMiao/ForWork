@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.Date;
 
 /**
  * @author mpf
@@ -26,7 +27,7 @@ public class User{
     private String role;
     private Integer status;
     private Integer isLogin;
-    private String lastLogin;
+    private Date lastLogin;
 
     public User() {
     }
