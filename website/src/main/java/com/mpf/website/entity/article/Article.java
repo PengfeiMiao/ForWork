@@ -13,6 +13,7 @@ public class Article {
     private Integer id;
     private String author;
     private String title;
+    private String intro;
     private String filePath;
     private Integer star;
     private Integer visit;
@@ -21,12 +22,14 @@ public class Article {
     private Date createTime;
     private Date updateTime;
 
-    public Article(){}
+    public Article() {
+    }
 
-    public Article(ArticleDTO articleDTO){
+    public Article(ArticleDTO articleDTO) {
         this.id = articleDTO.getId();
         this.author = articleDTO.getAuthor();
         this.title = articleDTO.getTitle();
+        this.intro = articleDTO.getIntro();
         this.star = articleDTO.getStar();
         this.visit = articleDTO.getVisit();
         this.comment = articleDTO.getComment();

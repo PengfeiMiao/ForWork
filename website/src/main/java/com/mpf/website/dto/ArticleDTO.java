@@ -17,6 +17,8 @@ public class ArticleDTO {
     private String author;
     @ApiModelProperty("标题")
     private String title;
+    @ApiModelProperty("摘要")
+    private String intro;
     @ApiModelProperty("markdown数据")
     private String content;
     @ApiModelProperty("点赞数")

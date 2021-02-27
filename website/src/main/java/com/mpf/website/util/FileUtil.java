@@ -24,7 +24,7 @@ public class FileUtil {
         } catch (Exception e) {
             log.info("FileUtil error, message:{}, e:{}", e.getMessage(), e);
         } finally {
-            if(ps != null) {
+            if (ps != null) {
                 ps.close();
             }
         }
@@ -40,6 +40,9 @@ public class FileUtil {
             BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
             String line;
             while ((line = br.readLine()) != null) {
+                if (sb.length() > 0) {
+                    sb.append("\n");
+                }
                 sb.append(line);
             }
         } catch (IOException e) {

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./layui/css/layui.css">
     <script src="./js/jquery.min.js"></script>
     <script src="./layui/layui.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/config.js"></script>
     <style>
         .layui-table-cell {
             height: auto;
@@ -22,6 +24,12 @@
             <div class="layui-card">
                 <!--                <div class="layui-card-header">标题</div>-->
                 <div class="layui-card-body">
+                    <div class="demoTable">
+                        <div class="layui-inline">
+                            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                        </div>
+                        <button class="layui-btn" data-type="reload" id="reload">搜索</button>
+                    </div>
                     <table class="layui-hide" id="test"></table>
                 </div>
             </div>
@@ -36,7 +44,10 @@
                 <div>{{d.title}}</div>
                 <div>{{d.intro}}</div>
                 <div>
-                    <p style="display:inline">{{d.time}}&emsp;&emsp;{{d.visit}}&emsp;|&emsp;{{d.star}}&emsp;|&emsp;{{d.comments}}</p>
+                    <p style="display:block; float:left;">{{d.createTime}}</p>
+                    <p style="display:block; float:left; margin-left: 20px; width: 20px">{{d.visit}}</p>
+                    <p style="display:block; float:left; margin-left: 20px; width: 20px">{{d.star}}</p>
+                    <p style="display:block; float:left; margin-left: 20px; width: 20px">{{d.comment}}</p>
                     <a style="display:inline; margin-left: 50%" href="detail.html?id={{d.id}}">浏览</a>
                     <a style="display:inline; margin-left: 50px" href="editor.html?id={{d.id}}">编辑</a>
                 </div>
@@ -46,37 +57,54 @@
 </script>
 
 <script>
+
+    var data = {
+        "page": 0,
+        "pageSize": 10
+    };
+
     layui.use('table', function () {
         var table = layui.table;
-
-        table.render({
-            elem: '#test'
-            , data: [
-                {
-                    "id": 1,
-                    "title": "自定义标题1",
-                    "intro": "摘要。。。此处省略一万字。。。此处省略一万字。。。此处省略一万字。。。",
-                    "time": "2020-01-01 00:00:00",
-                    "visit": 10,
-                    "star": 2,
-                    "comments": 1
-                },
-                {
-                    "id": 2,
-                    "title": "自定义标题2",
-                    "intro": "摘要。。。",
-                    "time": "2020-02-01 12:00:00",
-                    "visit": 99,
-                    "star": 5,
-                    "comments": 2
+        axios.post(baseUrl + "/article/list", data)
+            .then(res => {
+                console.log('data', res.data);
+                if (res.data.status === 200) {
+                    let articles = res.data.data.list;
+                    table.render({
+                        id: 'testReload'
+                        , elem: '#test'
+                        , data: articles
+                        , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                        , cols: [[
+                            {field: 'id', title: 'ID', width: '5%'},
+                            {field: 'title', title: '文章列表', width: '95%', templet: '#titleTpl'} //这里的templet值是模板元素的选择器
+                        ]],
+                        page: true
+                    });
                 }
-            ]
-            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-            , cols: [[
-                {field: 'id', title: 'ID', width: '5%'},
-                {field: 'title', title: '文章列表', width: '95%', templet: '#titleTpl'} //这里的templet值是模板元素的选择器
-            ]]
-        });
+            })
+
+        // 刷新按钮点击事件
+        $('#reload').on('click', function () {
+            axios.post(baseUrl + "/article/list", data)
+                .then(res => {
+                    console.log('data', res.data);
+                    if (res.data.status === 200) {
+                        let articles = res.data.data.list;
+                        table.reload('testReload', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            },
+                            data: articles
+                            // , where: {
+                            //     key: {
+                            //         id: demoReload.val()
+                            //     }
+                            // }
+                        }, 'data');
+                    }
+                })
+        })
     });
 </script>
 </body>

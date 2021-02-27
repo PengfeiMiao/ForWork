@@ -3,10 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="./editormd/css/editormd.css"/>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./layui/layui.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/jquery.params.js"></script>
+    <script src="./editormd/editormd.min.js"></script>
+    <script src="./editormd/lib/marked.min.js"></script>
+    <script src="./editormd/lib/prettify.min.js"></script>
+    <script src="./editormd/lib/raphael.min.js"></script>
+    <script src="./editormd/lib/underscore.min.js"></script>
+    <script src="./editormd/lib/sequence-diagram.min.js"></script>
+    <script src="./editormd/lib/flowchart.min.js"></script>
+    <script src="./editormd/lib/jquery.flowchart.min.js"></script>
 </head>
-<body>
-<div id="test-editor2">
-    <textarea id="text2" style="display:none;" placeholder="markdown语言">#Editor.md</textarea>
+<body style="min-height: 600px">
+<div class="layui-row layui-bg-gray" style="padding: 10px 0">
+    <div class="layui-col-xs6">
+        <label class="layui-form-label">文章标题</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" readonly="readonly" id="title2" placeholder="" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-col-xs6">
+        <div style="float: right; margin-right: 20px;">
+            <button type="button" class="layui-btn layui-btn-primary layui-btn-radius" style="width: 100px" id="edit2">编辑</button>
+        </div>
+    </div>
 </div>
+<div id="test-editor2">
+    <textarea id="text2" style="display:block;" placeholder="markdown content">#Editor.md</textarea>
+</div>
+<script src="./js/detail.js"></script>
 </body>
 </html>
