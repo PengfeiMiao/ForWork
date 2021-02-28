@@ -3,22 +3,26 @@ layui.use('layer', function () {
     $(document).ready(function () {
         articleId = $.query.get('id');
         console.log('articleId', articleId);
-        // layui.use('layer', function () {
-        layer.load({
-            shade: [0.1, '#fff'] //0.1透明度的白色背景
-        });
-        axios.get(baseUrl + '/article/detail', {
-            params: {
-                'articleId': articleId
-            }
-        }).then(res => {
-            console.log(res);
-            layer.closeAll('loading');
-            if (res.data.status === 200) {
-                $("#title1").val(res.data.data.title);
-                convertToMarkDown(res.data.data.content); // res.data.data.content
-            }
-        })
+        if (articleId != null && articleId !== '') {
+            // layui.use('layer', function () {
+            layer.load({
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            axios.get(baseUrl + '/article/detail', {
+                params: {
+                    'articleId': articleId
+                }
+            }).then(res => {
+                console.log(res);
+                layer.closeAll('loading');
+                if (res.data.status === 200) {
+                    $("#title1").val(res.data.data.title);
+                    convertToMarkDown(res.data.data.content); // res.data.data.content
+                }
+            })
+        } else {
+            convertToMarkDown('');
+        }
 
         $('#save').on('click', () => {
             layer.msg('是否保存博客', {
@@ -104,7 +108,7 @@ layui.use('layer', function () {
                     time: 500
                 });
                 setTimeout(() => {
-                    window.location.href = 'detail.html?id=' + articleId;
+                    window.location.href = 'detail.html?id=' + (res.data.data || articleId);
                 }, 200);
             }
         })

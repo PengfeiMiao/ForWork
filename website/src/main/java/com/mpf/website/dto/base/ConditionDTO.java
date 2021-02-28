@@ -2,6 +2,7 @@ package com.mpf.website.dto.base;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mpf.website.util.CommonUtil;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -32,8 +33,7 @@ public class ConditionDTO<T> {
     private String sortType;
 
     public QueryWrapper<T> generateQueryWrapper() {
-        QueryWrapper<T> wrapper = new QueryWrapper<>();
-        return wrapper;
+        return CommonUtil.convertToWrapper(this);
     }
 
     public Page<T> generatePageHelper() {

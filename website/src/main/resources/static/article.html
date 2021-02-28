@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="./layui/css/layui.css">
     <script src="./js/jquery.min.js"></script>
+    <!--    <script src="./layui/lay/modules/laypage.js"></script>-->
     <script src="./layui/layui.js"></script>
     <script src="./js/axios.min.js"></script>
     <script src="./js/config.js"></script>
@@ -17,20 +18,36 @@
         }
     </style>
 </head>
-<body style="min-height: 600px">
+<body style="min-height: 800px">
 <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
                 <!--                <div class="layui-card-header">标题</div>-->
                 <div class="layui-card-body">
-                    <div class="demoTable">
+                    <div class="demoTable" style="margin-bottom: 10px">
+                        <button class="layui-btn" id="create" style="width: 98px; margin-right: 5px">
+                            <i class="layui-icon">&#xe654;</i> 新建
+                        </button>
                         <div class="layui-inline">
                             <input class="layui-input" name="id" id="demoReload" autocomplete="off">
                         </div>
                         <button class="layui-btn" data-type="reload" id="reload">搜索</button>
                     </div>
-                    <table class="layui-hide" id="test"></table>
+                    <div class="layui-tab" lay-filter="blogTab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">已发布</li>
+                            <li>草稿</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <table class="layui-hide" id="blogTbl"></table>
+                            <div id="page"></div>
+                            <!--                            <div class="layui-tab-item layui-show">-->
+                            <!--                                <table class="layui-hide" id="test"></table>-->
+                            <!--                            </div>-->
+                            <!--                             <div class="layui-tab-item">内容2</div>-->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,13 +58,19 @@
     <div class="layui-col-md12">
         <div class="layui-card">
             <div class="layui-card-body">
-                <div>{{d.title}}</div>
-                <div>{{d.intro}}</div>
+                <div style="font-weight: bolder">{{d.title}}</div>
+                <div>摘要：{{d.intro || '暂无'}}</div>
                 <div>
                     <p style="display:block; float:left;">{{d.createTime}}</p>
-                    <p style="display:block; float:left; margin-left: 20px; width: 20px">{{d.visit}}</p>
-                    <p style="display:block; float:left; margin-left: 20px; width: 20px">{{d.star}}</p>
-                    <p style="display:block; float:left; margin-left: 20px; width: 20px">{{d.comment}}</p>
+                    <p style="display:block; float:left; margin-left: 36px; width: 36px">
+                        <i class="layui-icon">&#xe705;</i>&nbsp;{{d.visit}}
+                    </p>
+                    <p style="display:block; float:left; margin-left: 20px; width: 36px">
+                        <i class="layui-icon">&#xe6c6;</i>&nbsp;{{d.star}}
+                    </p>
+                    <p style="display:block; float:left; margin-left: 20px; width: 36px">
+                        <i class="layui-icon">&#xe63a;</i>&nbsp;{{d.comment}}
+                    </p>
                     <a style="display:inline; margin-left: 50%" href="detail.html?id={{d.id}}">浏览</a>
                     <a style="display:inline; margin-left: 50px" href="editor.html?id={{d.id}}">编辑</a>
                 </div>
@@ -59,12 +82,17 @@
 <script>
 
     var data = {
-        "page": 0,
-        "pageSize": 10
+        'page': 1,
+        'pageSize': 5,
+        'columns': [{
+            'cond': 0,
+            'name': 'status',
+            'value': '1'
+        }]
     };
 
-    layui.use('table', function () {
-        var table = layui.table;
+    layui.use(['element', 'table', 'laypage'], function () {
+        var table = layui.table, element = layui.element, laypage = layui.laypage;
         axios.post(baseUrl + "/article/list", data)
             .then(res => {
                 console.log('data', res.data);
@@ -72,39 +100,92 @@
                     let articles = res.data.data.list;
                     table.render({
                         id: 'testReload'
-                        , elem: '#test'
+                        , elem: '#blogTbl'
                         , data: articles
                         , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                         , cols: [[
-                            {field: 'id', title: 'ID', width: '5%'},
-                            {field: 'title', title: '文章列表', width: '95%', templet: '#titleTpl'} //这里的templet值是模板元素的选择器
-                        ]],
-                        page: true
+                            {field: 'id', title: 'ID', width: '4%'},
+                            {field: 'title', title: '文章列表', width: '96%', templet: '#titleTpl'} //这里的templet值是模板元素的选择器
+                        ]]
+                        , limits: [3, 5, 10]
+                        , limit: 5
+                        // , page: true
                     });
+                    page(res.data.data.total);
                 }
             })
 
         // 刷新按钮点击事件
         $('#reload').on('click', function () {
+            let titleCol = data.columns.find(item => item.name === 'title');
+            console.log('titleCol', titleCol);
+            let titleVal = $('#demoReload').val();
+            if (!titleCol) {
+                data.columns.push({
+                    'cond': 4,
+                    'name': 'title',
+                    'value': titleVal
+                });
+            } else {
+                titleCol.value = titleVal;
+            }
+            refreshTable();
+        })
+
+        $('#create').on('click', function () {
+            window.location.href = 'editor.html'
+        })
+
+        element.on('tab(blogTab)', function (elem) {
+            let index = elem.index;
+            console.log(index);
+            data.columns[0].value = index + 1;
+            refreshTable();
+        });
+
+        function refreshTable() {
             axios.post(baseUrl + "/article/list", data)
                 .then(res => {
                     console.log('data', res.data);
                     if (res.data.status === 200) {
                         let articles = res.data.data.list;
                         table.reload('testReload', {
-                            page: {
-                                curr: 1 //重新从第 1 页开始
-                            },
                             data: articles
-                            // , where: {
-                            //     key: {
-                            //         id: demoReload.val()
-                            //     }
-                            // }
                         }, 'data');
+                        page(res.data.data.total);
                     }
                 })
-        })
+        }
+
+        function page(total) {
+            laypage.render({
+                elem: 'page',   //注意，这里的 page 是 ID，不用加 # 号
+                count: total,   //数据总数，从服务端得到
+                curr: data.page,        // 当前页数
+                limit: data.pageSize,   // 每页条数
+                limits: [3, 5, 10],
+                layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                jump: function (obj, first) {
+                    //console.log(obj)
+                    //obj包含了当前分页的所有参数，比如：
+                    //console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                    //console.log(obj.limit); //得到每页显示的条数
+
+                    //首次不执行
+                    if (!first) {
+                        //do something
+                        numPage(obj.curr, obj.limit)  // 分页点击传参
+                    }
+                }
+            });
+        }
+
+        // 重写请求
+        function numPage(page, pageSize) {
+            data.page = page;
+            data.pageSize = pageSize;
+            refreshTable();
+        }
     });
 </script>
 </body>

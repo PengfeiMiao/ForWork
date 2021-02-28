@@ -58,7 +58,9 @@ public class TestServiceImpl implements TestService {
             filename = filename.split("\\.")[0];
         }
         filename += "_" + timeStr + ("." + file.getContentType().split("/")[1]);
-        String localPath = System.getProperty("user.dir") + File.separator + "upload";
+        String localPath = System.getProperty("user.dir")
+                + File.separator + "upload"
+                + File.separator + "image";
         File tempFileParentFolder = new File(localPath);
         if (!tempFileParentFolder.exists()) {
             tempFileParentFolder.mkdirs();
@@ -70,7 +72,7 @@ public class TestServiceImpl implements TestService {
             e.printStackTrace();
             return "";
         }
-        return filename;
+        return "image/" + filename;
     }
 
 }

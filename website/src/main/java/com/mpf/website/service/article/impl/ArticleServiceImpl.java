@@ -25,42 +25,52 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleMapper articleMapper;
 
     @Override
-    public Integer saveArticle(ArticleDTO articleDTO){
+    public Integer saveArticle(ArticleDTO articleDTO) {
         int res = -1;
         Article article = new Article(articleDTO);
         Integer articleId = article.getId();
+        String content = articleDTO.getContent();
+        if (StringUtils.isBlank(article.getIntro())) {
+            article.setIntro(content.substring(0, Math.min(content.length(), 50)));
+        }
         String filePath = "";
-        if(articleId != null && articleId > 0){
+        if (articleId != null && articleId > 0) {
             QueryWrapper<Article> wrapper = new QueryWrapper<>();
             wrapper.eq("id", article.getId());
             Article old = articleMapper.selectOne(wrapper);
             // 判断是否已存在
-            if(old != null && StringUtils.isNoneBlank(filePath = old.getFilePath())) {
+            if (old != null && StringUtils.isNoneBlank(filePath = old.getFilePath())) {
                 article.setUpdateTime(new Date());
                 res = articleMapper.updateById(article);
             }
         } else {
             // 不存在则新建
-            filePath = System.getProperty("user.dir") + File.separator + "upload"
+            filePath = System.getProperty("user.dir")
+                    + File.separator + "upload"
+                    + File.separator + "article"
                     + File.separator + articleDTO.getTitle() + ".txt";
             article.setFilePath(filePath);
             article.setCreateTime(new Date());
+            article.setComment(0);
+            article.setStar(0);
+            article.setVisit(0);
             res = articleMapper.insert(article);
         }
         // 将markdown数据保存到文件
         FileUtil.appendToFile(articleDTO.getContent(), filePath);
-        return res;
+        FileUtil.renameFile(filePath, articleDTO.getTitle() + ".txt");
+        return res > 0 ? article.getId() : res;
     }
 
     @Override
     public ArticleDTO detailArticle(Integer articleId) {
-        if(articleId != null && articleId > 0){
+        if (articleId != null && articleId > 0) {
             Article old = articleMapper.selectById(articleId);
             // 判断是否已存在
             String filePath = "";
-            if(old != null && StringUtils.isNoneBlank(filePath = old.getFilePath())) {
+            if (old != null && StringUtils.isNoneBlank(filePath = old.getFilePath())) {
                 File file = new File(filePath);
-                if(file.exists()) {
+                if (file.exists()) {
                     String content = FileUtil.readFile(filePath);
                     ArticleDTO article = new ArticleDTO(old);
                     article.setContent(content);

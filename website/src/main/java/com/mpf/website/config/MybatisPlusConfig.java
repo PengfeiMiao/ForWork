@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * @author: MiaoPengfei
  * @date: 2021/2/26 12:38
- * @description:
+ * @description: 配置使mybatis-plus分页生效
  * @since: 1.0.20
  */
 @EnableTransactionManagement

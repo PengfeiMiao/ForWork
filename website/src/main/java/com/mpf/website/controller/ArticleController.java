@@ -30,7 +30,7 @@ public class ArticleController {
     @PostMapping("/save")
     @ResponseBody
     public RestResponse saveArticle(@ApiParam("博客数据") @RequestBody ArticleDTO article) {
-        if(log.isInfoEnabled()) {
+        if (log.isInfoEnabled()) {
             log.info("saveArticle: {}", article);
         }
         RestResponse response = new RestResponse();
@@ -62,12 +62,13 @@ public class ArticleController {
         }
         return response;
     }
+
     @ApiOperation(value = "博客列表", notes = "博客列表")
     @PostMapping("/list")
     @ResponseBody
     public RestResponse detailArticle(
             @ApiParam("筛选条件") @RequestBody ConditionDTO<Article> condition
-            ) {
+    ) {
         RestResponse response = new RestResponse();
         try {
             QueryWrapper<Article> wrapper = condition.generateQueryWrapper();

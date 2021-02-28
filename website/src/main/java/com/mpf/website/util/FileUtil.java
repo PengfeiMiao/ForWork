@@ -22,7 +22,7 @@ public class FileUtil {
             ps.println(data);
 //            ps.append(data);
         } catch (Exception e) {
-            log.info("FileUtil error, message:{}, e:{}", e.getMessage(), e);
+            log.error("FileUtil error, message:{}, e:{}", e.getMessage(), e);
         } finally {
             if (ps != null) {
                 ps.close();
@@ -46,8 +46,25 @@ public class FileUtil {
                 sb.append(line);
             }
         } catch (IOException e) {
-            log.info("FileUtil error, message:{}, e:{}", e.getMessage(), e);
+            log.error("FileUtil error, message:{}, e:{}", e.getMessage(), e);
         }
         return sb.toString();
+    }
+
+    public static void renameFile(String filePath, String newName) {
+        int index = filePath.lastIndexOf(File.separator);
+        String folderPath = filePath.substring(0, index);
+        String fileName = filePath.substring(index + 1);
+        if (fileName.equals(newName)) {
+            return;
+        }
+        File file = new File(filePath); //指定文件名及路径
+        String newPath = folderPath + File.separator + newName;
+        if (file.exists() && file.renameTo(new File(newPath))) {
+            log.info("FileUtil,rename {} to {} success", filePath, newPath);
+        } else {
+            log.info("FileUtil,rename {} to {} fail", filePath, newPath);
+        }
+
     }
 }
