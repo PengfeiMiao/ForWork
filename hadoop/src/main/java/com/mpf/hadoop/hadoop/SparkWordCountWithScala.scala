@@ -1,4 +1,4 @@
-package com.mpf.forwork.hadoop
+package com.mpf.hadoop.hadoop
 
 import java.text.SimpleDateFormat
 import java.util.Date
