@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `article`  (
                             `id` int(11) NOT NULL AUTO_INCREMENT,
                             `author` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                             `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                            `intro` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                             `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                             `star` int(11) NULL DEFAULT NULL,
                             `visit` int(11) NULL DEFAULT NULL,
