@@ -21,19 +21,53 @@
             object-fit: cover;
         }
         .layui-carousel {
-            margin: 10px auto;
+            margin: 5px auto;
         }
+
+        .top {
+            margin-top: 20px;
+        }
+        .search {
+            background: url(img/search.png) no-repeat 4px center;
+            padding-left: 40px;
+            width: 600px;
+            border-radius: 5px;
+            border-width: 2px;
+        }
+
+        .label-over {
+            float: left;
+            margin-left: 5px;
+            font-size: 15px;
+            width: 60px;
+            overflow: hidden;
+            /*text-overflow: ellipsis;*/
+            white-space: nowrap;
+        }
+
+        .label-over:hover {
+            text-overflow: inherit;
+            overflow: visible;
+            white-space: pre-line;     /*合并空白符序列，但是保留换行符。*/
+        }
+
     </style>
 </head>
-<body style="min-height: 600px">
-<!--<div style="padding: 5px; text-align:center; background-color: #F2F2F2;">-->
-<div class="layui-carousel" id="test1">
-    <div carousel-item="">
-        <div><img src="./img/blog4.jpg" alt=""></div>
-        <div><img src="./img/blog6.jpg" alt=""></div>
+<body style="min-height: 1000px">
+<div class="layui-container top">
+    <div class="layui-row" style="height: auto">
+        <input type="text" class="layui-input search"/>
     </div>
+    <div class="layui-carousel" id="test1">
+        <div carousel-item="">
+            <div><img src="./img/blog4.jpg" alt=""></div>
+            <div><img src="./img/blog6.jpg" alt=""></div>
+        </div>
+    </div>
+    <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" style="width: 110px">
+        <a class="label-over">标准123按钮</a><i class="layui-icon layui-icon-close" style="float: right;"></i>
+    </button>
 </div>
-<!--</div>-->
 <script>
     layui.use(['carousel', 'form'], function () {
         var carousel = layui.carousel
@@ -42,7 +76,7 @@
         //图片轮播
         carousel.render({
             elem: '#test1'
-            , width: '95%'
+            , width: '100%'
             , height: '500px'
             , interval: 5000
         });
