@@ -67,7 +67,7 @@ public class TestController {
             jsonObject.put("success", 0);//图片上传失败的信息码
             jsonObject.put("message", "upload error!");//信息
         } else {
-            if(StringUtils.isBlank(serverAddr)){
+            if(StringUtils.isBlank(serverAddr)) {
                 serverAddr = request.getServerName()+ ":" + request.getServerPort() ;
             }
             String url = "http://" + serverAddr + "/" + CommonStatic.APPLICATION_NAME + "/" + path;

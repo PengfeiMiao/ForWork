@@ -1,12 +1,10 @@
-package com.mpf.website.dto;
+package com.mpf.website.dto.article;
 
 import com.mpf.website.entity.article.Article;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
-
-import java.lang.reflect.InvocationTargetException;
 
 @Data
 @ApiModel
@@ -29,6 +27,8 @@ public class ArticleDTO {
     private Integer comment;
     @ApiModelProperty("文章状态")
     private Integer status;
+    @ApiModelProperty("文章标签")
+    private String tags;
 
     public ArticleDTO(){}
 

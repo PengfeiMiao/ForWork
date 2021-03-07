@@ -2,7 +2,7 @@ package com.mpf.website.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mpf.website.dto.ArticleDTO;
+import com.mpf.website.dto.article.ArticleDTO;
 import com.mpf.website.dto.base.ConditionDTO;
 import com.mpf.website.entity.article.Article;
 import com.mpf.website.entity.rest.RestResponse;
@@ -53,9 +53,7 @@ public class ArticleController {
         RestResponse response = new RestResponse();
         try {
             ArticleDTO data = articleService.detailArticle(articleId);
-            response.setStatus(RestResponse.SUCCESS);
-            response.setMessage("success");
-            response.setData(data);
+            response.successBuilder(data);
         } catch (Exception e) {
             log.error("detailArticle fail,message:{}", e.getMessage());
             response.setMessage(e.getMessage());

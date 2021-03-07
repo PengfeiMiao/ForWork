@@ -27,11 +27,19 @@ public class RestResponse {
 
     public RestResponse() {
         this.status = RestResponse.NOT_FOUND;
-        this.message = "404 not found";
+        this.message = "fail";
     }
 
     public RestResponse(int status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    public void successBuilder(Object... data) {
+        this.status = RestResponse.SUCCESS;
+        this.message = "success";
+        if (data.length > 0) {
+            this.data = data[0];
+        }
     }
 }

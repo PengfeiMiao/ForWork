@@ -20,13 +20,20 @@
             height: 100%;
             object-fit: cover;
         }
+
         .layui-carousel {
+            float: left;
             margin: 5px auto;
+        }
+
+        .layui-carousel-ind {
+            height: auto;
         }
 
         .top {
             margin-top: 20px;
         }
+
         .search {
             background: url(img/search.png) no-repeat 4px center;
             padding-left: 40px;
@@ -37,24 +44,27 @@
 
         .label-over {
             float: left;
-            margin-left: 5px;
             font-size: 15px;
             width: 60px;
-            overflow: hidden;
-            /*text-overflow: ellipsis;*/
-            white-space: nowrap;
         }
 
-        .label-over:hover {
-            text-overflow: inherit;
-            overflow: visible;
-            white-space: pre-line;     /*合并空白符序列，但是保留换行符。*/
+        .show-close:hover:before {
+            content: "\1006"
+        }
+
+        .hidden-over {
+            float: left;
+            height: auto;
+            width: 60px;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-left: 5px;
         }
 
     </style>
 </head>
 <body style="min-height: 1000px">
-<div class="layui-container top">
+<div class="layui-container top" style="margin-left: 40px">
     <div class="layui-row" style="height: auto">
         <input type="text" class="layui-input search"/>
     </div>
@@ -64,9 +74,7 @@
             <div><img src="./img/blog6.jpg" alt=""></div>
         </div>
     </div>
-    <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" style="width: 110px">
-        <a class="label-over">标准123按钮</a><i class="layui-icon layui-icon-close" style="float: right;"></i>
-    </button>
+    <div id="btnList" style="min-width: 980px;line-height: 36px;"></div>
 </div>
 <script>
     layui.use(['carousel', 'form'], function () {
@@ -76,17 +84,113 @@
         //图片轮播
         carousel.render({
             elem: '#test1'
-            , width: '100%'
+            , width: '60%'
             , height: '500px'
             , interval: 5000
         });
 
         //事件
         carousel.on('change(test1)', function (res) {
-            console.log(res)
+            console.log(res);
         });
 
     });
+
+    var T = [];
+
+    $(document).ready(function () {
+
+        let colorArr = ['layui-bg-red', 'layui-bg-orange', 'layui-bg-green', 'layui-bg-cyan', 'layui-bg-blue', 'layui-bg-black'];
+
+        for (let i = 0; i < 20; i++) {
+            let rand = Math.floor(Math.random() * colorArr.length);
+            let btnHtml = "<button id='label_" + i + "' type='button' class='layui-btn layui-btn-sm layui-btn-radius " + colorArr[rand] + "' style='margin-left: 10px;width: 110px;'>"
+                + "<p class='hidden-over' onclick='labelAction("+i+")'><span class='label-over'>标准按钮3.141592653</span></p> <i class='layui-icon layui-icon-note show-close' onclick='deleteAction("+i+")' style='float: right;'></i>"
+                + "</button>";
+            $('#btnList').append(btnHtml);
+            // 初始化定时器数组
+            T['label_' + i] = {
+                'id': 0,
+                'time': 0
+            };
+        }
+
+        $(".layui-btn-radius").mouseenter(function () {
+            // console.log('mouseenter', this.id);
+            countAnimate(this.id);
+        }).mouseleave(function () {
+            // console.log('mouseleave', this.id);
+            clearAnimate(this.id);
+        })
+    })
+
+    function labelAction(i) {
+        console.log('labelAction', i);
+    }
+
+    function deleteAction(i) {
+        console.log('deleteAction', i);
+    }
+
+    function countAnimate(index) {
+        T[index].id = setInterval(() => {
+            T[index].time += 100;
+            // console.log(T[index]);
+            if (T[index].time > 500) {
+                stopCount(index);
+                scrollAnimate(index);
+            }
+        }, 100);
+    }
+
+    function scrollAnimate(index) {
+        let span = $('#' + index + ' span');
+        let length = textSize(15, span.text()).width - 20;
+        // console.log(span.text(), length);
+        span.css('marginLeft', 0)
+            .animate({marginLeft: '-' + length + 'px'}, length * 15, 'linear');
+    }
+
+    function stopCount(index) {
+        T[index].time = 0;
+        clearInterval(T[index].id);
+    }
+
+    function clearAnimate(index) {
+        stopCount(index);
+        let span = $('#' + index + ' span');
+        let marginLeft = span.css('marginLeft');
+        let total = textSize(15, span.text()).width - 20;
+        let cur = parseInt(marginLeft.substring(0, marginLeft.length - 2));
+        console.log(cur + total, (cur + total) * 15);
+        if (cur + total > 0) {
+            console.log('动画未完成');
+            setTimeout(() => {
+                span.css('marginLeft', 0);
+            }, (cur + total) * 16);
+        } else {
+            console.log('动画已完成');
+            span.css('marginLeft', 0);
+        }
+    }
+
+    function textSize(fontSize, text) {
+        //fontSize:代表汉字的大小，英文字会自动按照默认值
+        var span = document.createElement("span");
+        var result = {};
+        result.width = span.offsetWidth;
+        result.height = span.offsetHeight;
+        span.style.visibility = "hidden";
+        span.style.fontSize = fontSize;
+        document.body.appendChild(span);
+        if (typeof span.textContent != "undefined")
+            span.textContent = text;
+        else span.innerText = text;
+        result.width = span.offsetWidth - result.width;
+        result.height = span.offsetHeight - result.height;
+        span.parentNode.removeChild(span);
+        return result;
+    }
 
 </script>
 </body>

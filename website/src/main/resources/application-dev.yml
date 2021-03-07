@@ -9,10 +9,10 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     # 配置启动自动执行sql
-    schema: classpath*:sql/init.sql
+    schema: classpath*:sql/forwork.sql
     sql-script-encoding: utf-8
     platform: mysql
-    initialization-mode: always
+    initialization-mode: never
     # 配置Druid的其他参数，以下配置必须增加一个配置文件才能有效
     # 初始化大小，最小，最大
     druid:
@@ -42,6 +42,9 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
       # 合并多个DruidDataSource的监控数据
       useGlobalDataSourceStat: true
+      filter:
+        config:
+          enabled: true
       web-stat-filter:
         enabled: true
       stat-view-servlet:

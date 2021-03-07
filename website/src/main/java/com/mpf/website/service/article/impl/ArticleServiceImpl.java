@@ -2,12 +2,12 @@ package com.mpf.website.service.article.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mpf.website.dto.ArticleDTO;
+import com.mpf.website.dto.article.ArticleDTO;
 import com.mpf.website.entity.article.Article;
-import com.mpf.website.entity.user.User;
 import com.mpf.website.mapper.ArticleMapper;
 import com.mpf.website.service.article.ArticleService;
-import com.mpf.website.util.DateUtil;
+import com.mpf.website.service.tag.TagService;
+import com.mpf.website.util.CollectionUtil;
 import com.mpf.website.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +24,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleMapper articleMapper;
 
+    @Autowired
+    TagService tagService;
+
     @Override
     public Integer saveArticle(ArticleDTO articleDTO) {
         int res = -1;
@@ -34,12 +37,14 @@ public class ArticleServiceImpl implements ArticleService {
             article.setIntro(content.substring(0, Math.min(content.length(), 50)));
         }
         String filePath = "";
+        String tags = "";
         if (articleId != null && articleId > 0) {
             QueryWrapper<Article> wrapper = new QueryWrapper<>();
             wrapper.eq("id", article.getId());
             Article old = articleMapper.selectOne(wrapper);
             // 判断是否已存在
             if (old != null && StringUtils.isNoneBlank(filePath = old.getFilePath())) {
+                tags = old.getTags();
                 article.setUpdateTime(new Date());
                 res = articleMapper.updateById(article);
             }
@@ -56,6 +61,17 @@ public class ArticleServiceImpl implements ArticleService {
             article.setVisit(0);
             res = articleMapper.insert(article);
         }
+
+        // 更新tags关联表
+        String[] newTagsArr = StringUtils.isBlank(articleDTO.getTags()) ? new String[]{} : articleDTO.getTags().split(",");
+        String[] oldTagsArr = StringUtils.isBlank(tags) ? new String[]{} : tags.split(",");
+        String[] intersectArr = CollectionUtil.intersect(newTagsArr, oldTagsArr);
+        String[] deletedArr = CollectionUtil.minus(oldTagsArr, intersectArr);
+        String[] updatedArr = CollectionUtil.minus(newTagsArr, intersectArr);
+        int deleted = tagService.updateTags(deletedArr, false);
+        int updated = tagService.updateTags(updatedArr, true);
+        log.info("sync tags, delete:{}, update:{}", deleted, updated);
+
         // 将markdown数据保存到文件
         FileUtil.appendToFile(articleDTO.getContent(), filePath);
         FileUtil.renameFile(filePath, articleDTO.getTitle() + ".txt");

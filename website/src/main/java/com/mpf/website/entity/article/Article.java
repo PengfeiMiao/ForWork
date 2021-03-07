@@ -2,7 +2,7 @@ package com.mpf.website.entity.article;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.mpf.website.dto.ArticleDTO;
+import com.mpf.website.dto.article.ArticleDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,6 +14,7 @@ public class Article {
     private String author;
     private String title;
     private String intro;
+    private String tags;
     private String filePath;
     private Integer star;
     private Integer visit;
@@ -34,5 +35,6 @@ public class Article {
         this.visit = articleDTO.getVisit();
         this.comment = articleDTO.getComment();
         this.status = articleDTO.getStatus();
+        this.tags = articleDTO.getTags();
     }
 }

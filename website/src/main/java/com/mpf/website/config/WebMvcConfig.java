@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
-
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -39,7 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/public/")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
-        // web jars swagger-ui knife4j
+        // webjars swagger-ui knife4j
         registry.addResourceHandler("doc.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
