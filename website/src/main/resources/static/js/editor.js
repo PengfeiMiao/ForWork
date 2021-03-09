@@ -25,16 +25,26 @@ layui.use('layer', function () {
         }
 
         $('#save').on('click', () => {
-            layer.msg('是否保存博客', {
-                time: 0
-                // , icon: 6 // 微笑icon
-                , btn: ['确认', '取消']
-                , yes: function (index) {
+
+            //页面层-自定义
+            layer.open({
+                type: 2,
+                title: '发布文章',
+                closeBtn: 0,
+                shadeClose: true,
+                area: ['600px', '400px'],
+                skin: 'layui-layer-demo',
+                content: 'commit.html',
+                btn: ['发布', '取消'],
+                yes: function (index) {
                     layer.close(index);
                     layer.load({
                         shade: [0.1, '#fff'] //0.1透明度的白色背景
                     });
                     save(1);
+                }
+                , btn2: function (index) {
+                    layer.close(index);
                 }
             });
         })
@@ -92,6 +102,7 @@ layui.use('layer', function () {
     }
 
     function save(status) {
+
         let title = $("#title1").val();
         let content = editor1.getMarkdown();
         axios.post(baseUrl + '/article/save', {
