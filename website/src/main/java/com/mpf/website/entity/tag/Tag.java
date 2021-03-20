@@ -22,4 +22,6 @@ public class Tag {
     private Date createTime;
     private Date updateTime;
     private Integer used;
+    private Integer parentId;
+    private Integer flag;
 }

@@ -103,13 +103,24 @@ layui.use('layer', function () {
 
     function save(status) {
 
+        var tagJson = localStorage.getItem('tagArr');
+        var tagArr = tagJson != null ? JSON.parse(tagJson) : [];
+        var tagStr = '';
+        tagArr.forEach((it, index) => {
+            if(index > 0) {
+                tagStr += ',';
+            }
+            tagStr += it;
+        })
+
         let title = $("#title1").val();
         let content = editor1.getMarkdown();
         axios.post(baseUrl + '/article/save', {
             'id': articleId,
             'title': title,
             'content': content,
-            'status': status
+            'status': status,
+            'tags': tagStr
         }).then(res => {
             console.log(res);
             layer.closeAll('loading');

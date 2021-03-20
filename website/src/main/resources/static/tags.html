@@ -10,6 +10,8 @@
     <script src="./layui/layui.js"></script>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/jquery.params.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/config.js"></script>
     <style>
         .custom-scale {
             zoom: 0.8;
@@ -20,6 +22,11 @@
         .first-tab i.layui-tab-close {
             display: none !important;
         }
+
+        .btn-selected {
+            background-color: #DFDFDF;
+        }
+
     </style>
 </head>
 <body>
@@ -34,62 +41,110 @@
         <div class="layui-tab custom-scale" lay-filter="demo" lay-allowclose="true">
             <ul class="layui-tab-title">
                 <li class="first-tab layui-this" lay-id="11">常用标签<i class="layui-tab-close"></i></li>
-                <li lay-id="22">用户管理<i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
-                <li lay-id="33">权限分配<i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
-                <li lay-id="44">商品管理<i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
+                <li lay-id="22">大数据<i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
+                <li lay-id="33">云计算<i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">内容1</div>
                 <div class="layui-tab-item">内容2</div>
                 <div class="layui-tab-item">内容3</div>
-                <div class="layui-tab-item">内容4</div>
             </div>
         </div>
     </div>
 </form>
 
 <script>
+    function selectBtn(othis) {
+        console.log('click', othis.text());
+        if (othis.hasClass('btn-selected')) {
+            othis.removeClass('btn-selected');
+            let evalStr = "parent.deleteTagByContent('" + othis.text() + "')";
+            eval(evalStr);
+        } else {
+            othis.addClass('btn-selected');
+            let evalStr = "parent.addTag('" + othis.text() + "')";
+            eval(evalStr);
+        }
+    }
+
     layui.use('element', function () {
         var element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
 
         //触发事件
-        // var active = {
-        //     tabAdd: function () {
-        //         //新增一个Tab项
-        //         element.tabAdd('demo', {
-        //             title: '新选项' + (Math.random() * 1000 | 0) //用于演示
-        //             , content: '内容' + (Math.random() * 1000 | 0)
-        //             , id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
-        //         })
-        //     }
-        //     , tabDelete: function (othis) {
-        //         //删除指定Tab项
-        //         element.tabDelete('demo', '44'); //删除：“商品管理”
-        //         othis.addClass('layui-btn-disabled');
-        //     }
-        //     , tabChange: function () {
-        //         //切换到指定Tab项
-        //         element.tabChange('demo', '22'); //切换到：用户管理
-        //     }
-        // };
+        var active = {
+            tabAdd: function (key, content) {
+                //新增一个Tab项
+                element.tabAdd('demo', {
+                    title: key
+                    , content: content
+                    , id: key
+                })
+                element.tabChange('demo', key);
+            }
+            , tabDelete: function (othis, key) {
+                //删除指定Tab项
+                element.tabDelete('demo', key);
+                othis.addClass('layui-btn-disabled');
+            }
+            , tabChange: function (key) {
+                //切换到指定Tab项
+                element.tabChange('demo', key);
+            }
+        };
 
         $('.layui-tab-close').on('click', function () {
-            var that = $(this).parent();
-            element.tabDelete('demo', that.attr('lay-id'));
+            var othis = $(this);
+            active['tabDelete'] ? active['tabDelete'].call(this, othis, othis.parent().attr('lay-id')) : '';
         });
 
         $('#keyword').on('keypress', function (event) {
             if (event.keyCode === 13) {
+                var tagJson = localStorage.getItem('tagArr');
+                var tagArr = tagJson != null ? JSON.parse(tagJson) : [];
+                console.log('tagArr',tagArr);
+
                 //alert('你输入的内容为: ' + $('#keyword').val());
-                var keyword = $('#keyword').val();
-                element.tabAdd('demo', {
-                    title: keyword
-                    , content: '内容' + (Math.random() * 1000 | 0)
-                    , id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
-                })
+                var keyword = $('#keyword').val().trim();
+                axios.get(baseUrl + '/tag/search', {
+                    params: {
+                        'keyword': keyword,
+                        'mode': 2
+                    }
+                }).then(res => {
+                    if (res.data.status === 200) {
+
+                        let content = '';
+                        res.data.data.forEach(it => {
+                            let flag = tagArr.some(item => item === it.content);
+                            console.log(it.content, flag);
+                            if (flag) {
+                                content += '<button type="button" class="layui-btn layui-btn-primary layui-btn-xs btn-selected" onclick="selectBtn($(this))">' + it.content + '</button>';
+                            } else {
+                                content += '<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" onclick="selectBtn($(this))">' + it.content + '</button>';
+                            }
+                        })
+                        var flag = false;
+                        $('.layui-tab-title').children().each((index, el) => {
+                            let label = $(el).text().replace('ဆ', '').trim();
+                            if (label === keyword) {
+                                // element.tabChange('demo', $(el).attr('lay-id'));
+                                $('.layui-tab-content').children().each((index2, el2) => {
+                                    if (index2 === index) {
+                                        $(el2).html(content);
+                                    }
+                                });
+                                element.tabChange('demo', $(el).attr('lay-id'));
+                                active['tabChange'] ? active['tabChange'].call(this, $(el).attr('lay-id')) : '';
+                                flag = true;
+                            }
+                        });
+                        if (!flag) {
+                            active['tabAdd'] ? active['tabAdd'].call(this, keyword, content) : '';
+                        }
+                    }
+                });
             }
         });
-
     });
 </script>
 </body>

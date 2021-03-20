@@ -20,13 +20,19 @@
             width: 100%;
             height: auto;
         }
+
         .flex-container .flex-item {
             height: auto;
         }
+
         .custom-skin {
             /*background-color: transparent !important;*/
-            box-shadow: 0px 0px 5px rgba(0,0,0,0.5) !important;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5) !important;
             /*border: 5px #000;*/
+        }
+
+        .layui-form-select dl {
+            max-height: 150px;
         }
     </style>
 </head>
@@ -45,60 +51,96 @@
     <div class="layui-form-item">
         <label class="layui-form-label">文章分类</label>
         <div class="layui-input-block">
-            <input type="text" name="category" lay-verify="required" placeholder="请输入分类" autocomplete="off"
-                   class="layui-input">
+            <select id="classify" name="modules" lay-verify="required" lay-search="">
+                <option value="">搜索关键字</option>
+            </select>
         </div>
     </div>
 </form>
 <script>
     var count = 0;
-    var origin = "<button id='label_add' type='button' onclick='addTag()' class='layui-btn layui-btn-primary layui-btn-sm' style='margin-left: 10px; border-radius: 6px;'>\n" +
+    var origin = "<button id='label_add' type='button' onclick='openDialog()' class='layui-btn layui-btn-primary layui-btn-sm' style='margin-left: 10px; border-radius: 6px;'>\n" +
         "                <i class='layui-icon layui-icon-addition' style='float: left;margin-right: 5px;'></i>\n" +
         "                <span>添加文章标签</span>\n" +
         "            </button>";
     var tagArr = [];
 
-    $(document).ready(() => {
-        $('#tags').html(origin);
-    })
 
-    var layerMenu;
+    layui.use('form', function () {
+        var form = layui.form;
+        $(document).ready(() => {
+            $('#tags').html(origin);
+            localStorage.setItem('tagArr', JSON.stringify(tagArr));
 
-    function addTag() {
-        console.log(111);
-        count++;
-        tagArr.push('测试标签' + count);
-        generateTags();
-        // console.log($('#label_add'));
-        // if(!layerMenu) {
-            layui.use('layer', function () {
-                //页面层-自定义
-                layer.open({
-                    type: 2,
-                    title: false,
-                    closeBtn: 0,
-                    shade: [0.1, '#FFF'],
-                    shadeClose: true,
-                    area: ['470px', '200px'],
-                    offset: [ //随机坐标
-                        $('#label_add').position().top + 34,
-                        '110px'
-                    ],
-                    skin: 'custom-skin',
-                    content: 'tags.html',
-                    success: function (index) {
-                        console.log(index);
-                        layerMenu = index;
-                    },
+            let data = [
+                {
+                    "id": 1,
+                    "name": "Java基础"
+                }, {
+                    "id": 2,
+                    "name": "数据结构与算法"
+                }, {
+                    "id": 3,
+                    "name": "计算机网络"
+                }, {
+                    "id": 4,
+                    "name": "Spring框架"
+                }, {
+                    "id": 5,
+                    "name": "大数据"
+                }
+            ]
+            let str = "<option value=''>搜索关键字</option>";
+            for (let i of data) {
+                str += `<option value='${i.id}'>${i.name}</option>`;
+            }
+            $("#classify").html(str);
+            form.render();
+        })
+    });
 
-                });
+    function openDialog() {
+        layui.use('layer', function () {
+            //页面层-自定义
+            layer.open({
+                type: 2,
+                title: false,
+                closeBtn: 0,
+                shade: [0.1, '#FFF'],
+                shadeClose: true,
+                area: ['470px', '200px'],
+                offset: [
+                    $('#label_add').position().top + 34,
+                    '110px'
+                ],
+                skin: 'custom-skin',
+                content: 'tags.html',
+                success: function (index) {
+                    console.log(index);
+                }
             });
-        // }
+        });
+    }
+
+    function addTag(content) {
+        console.log(111);
+        tagArr.push(content);
+        generateTags();
     }
 
     function deleteTag(index) {
         console.log(222);
         tagArr.splice(index, 1);
+        generateTags();
+    }
+
+    function deleteTagByContent(content) {
+        console.log(333);
+        tagArr.forEach((it, index) => {
+            if (it === content) {
+                tagArr.splice(index, 1);
+            }
+        });
         generateTags();
     }
 
@@ -113,8 +155,10 @@
             totalTags = btnHtml + totalTags;
             count1++;
         })
-        console.log(totalTags);
+        // console.log(totalTags);
         $('#tags').html(totalTags);
+        // 同步到浏览器缓存
+        localStorage.setItem('tagArr', JSON.stringify(tagArr));
     }
 </script>
 </body>
