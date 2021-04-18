@@ -1,0 +1,18 @@
+########################################################
+### 默认应用配置
+########################################################
+spring:
+  profiles:
+    active: prod
+  main.allow-bean-definition-overriding: true
+  mvc:
+    favicon:
+      enabled: true
+  thymeleaf:
+    cache: false
+    cache-period: 0
+  template:
+    cache: false
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8

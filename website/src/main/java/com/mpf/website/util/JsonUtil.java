@@ -30,7 +30,9 @@ public class JsonUtil {
 		objectMapper = new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		//objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+//		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+//		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 	}
 
 	public <T> T readValue(String jsonStr, Class<T> valueType) {
@@ -150,7 +152,7 @@ public class JsonUtil {
 	 * @param object
 	 * @return
 	 */
-	public  String toJSon(Object object) {
+	public  String toJson(Object object) {
 		try {
 			return objectMapper.writeValueAsString(object);
 		} catch (Exception e) {
