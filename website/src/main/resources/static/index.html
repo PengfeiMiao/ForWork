@@ -9,6 +9,9 @@
     <script src="./js/index.js"></script>
     <script src="./js/axios.min.js"></script>
     <script src="./js/test.js"></script>
+    <style>
+        html { overflow-x:hidden; }
+    </style>
 </head>
 <body>
 
@@ -23,9 +26,9 @@
     <li class="layui-nav-item">
         <a href="javascript:;">关于</a>
         <dl class="layui-nav-child">
-            <dd><a property="page2.html">照片墙</a></dd>
-            <dd><a>留言区</a></dd>
-            <dd><a>相关网站</a></dd>
+            <dd><a property="page1.html">照片墙</a></dd>
+            <dd><a property="page2.html">留言区</a></dd>
+            <dd><a property="page3.html">相关网站</a></dd>
         </dl>
     </li>
     <li class="layui-nav-item" style="float: right; right: 0;">
@@ -39,26 +42,34 @@
 </ul>
 
 <iframe id="iframeMain" src="home.html" style="overflow:visible;"
-        scrolling="no" height="100%" width="100%"></iframe>
+        scrolling="no" height="100%" width="100%" onload="setIframeHeight()"></iframe>
 <script>
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function(){
+    layui.use('element', function() {
         var element = layui.element;
         element.render('nav','test');
-        element.on('nav(test)', function(elem){
+        element.on('nav(test)', function(elem) {
             console.log(elem); //得到当前点击的DOM对象
-            $("#iframeMain")
-                .attr("src",$(this).attr("property"))
+            $("#iframeMain").attr("src",$(this).attr("property"))
         });
     });
 
-    $("#iframeMain").load(function() {
-        var mainHeight = $(this).contents().find("body").height() + 20;
-        console.log(mainHeight)
-        $(this).height(mainHeight);
-    });
-</script>
+    // $("#iframeMain").load(function() {
+    //     var mainHeight = $(this).contents().find("body").height() + 20;
+    //     console.log(mainHeight)
+    //     $(this).height(mainHeight);
+    // });
 
+    //这里代码解决：iframe 被其他页面撑开太高，可以恢复自适应高度
+    function setIframeHeight() {
+        let iframe = $('#iframeMain');
+        iframe.height(iframe.contents().find("body").height() + 20);
+        setTimeout(() => {
+            let iframe = $('#iframeMain');
+            iframe.height(iframe.contents().find("body").height() + 20);
+        }, 300);
+    }
+</script>
 
 </body>
 </html>

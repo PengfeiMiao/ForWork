@@ -3,7 +3,7 @@ properties:
     enabled: true
     resource:
   proxy:
-    server: 49.235.229.66
+    server: # 49.235.229.66
 
 spring:
   datasource:

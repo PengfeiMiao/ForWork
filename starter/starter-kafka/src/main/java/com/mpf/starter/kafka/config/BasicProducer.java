@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,11 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty(name = "kafka.enabled.producer", havingValue = "true")
 public class BasicProducer {
-	@Autowired
-	@Qualifier("basicKafkaTemplate")
-	private KafkaTemplate<String, BasicMessage> kafkaTemplate;
+    @Autowired
+    @Qualifier("basicKafkaTemplate")
+    private KafkaTemplate<String, BasicMessage> kafkaTemplate;
 
-	public void send(String topic, BasicMessage basic) throws Exception {
-		kafkaTemplate.send(topic, basic).get();
-	}
+    public void send(String topic, BasicMessage basic) throws Exception {
+        SendResult<String, BasicMessage> sendResult = kafkaTemplate.send(topic, basic).get();
+        log.info("BasicProducer, ProducerRecord: {}", sendResult.getProducerRecord());
+        log.info("BasicProducer, RecordMetadata: {}", sendResult.getRecordMetadata());
+    }
 }

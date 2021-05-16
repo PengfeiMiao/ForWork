@@ -3,9 +3,9 @@
 ########################################################
 kafka:
   enabled:
-    producer: false
-    consumer: false
-  bootstrap-servers: 22.188.233.95:19092,22.188.233.96:19092,22.188.233.97:19092
+    producer: true
+    consumer: true
+  bootstrap-servers: # 121.4.197.103:9092
   max-block-ms: 6000
   topic:
-    basictopic: kafka2tab
+    basictopic: test

@@ -76,6 +76,7 @@
     </div>
     <div id="btnList" style="min-width: 980px;line-height: 36px;"></div>
 </div>
+<script src="./js/config.js"></script>
 <script>
     layui.use(['carousel', 'form'], function () {
         var carousel = layui.carousel
@@ -172,24 +173,6 @@
             console.log('动画已完成');
             span.css('marginLeft', 0);
         }
-    }
-
-    function textSize(fontSize, text) {
-        //fontSize:代表汉字的大小，英文字会自动按照默认值
-        var span = document.createElement("span");
-        var result = {};
-        result.width = span.offsetWidth;
-        result.height = span.offsetHeight;
-        span.style.visibility = "hidden";
-        span.style.fontSize = fontSize;
-        document.body.appendChild(span);
-        if (typeof span.textContent != "undefined")
-            span.textContent = text;
-        else span.innerText = text;
-        result.width = span.offsetWidth - result.width;
-        result.height = span.offsetHeight - result.height;
-        span.parentNode.removeChild(span);
-        return result;
     }
 
 </script>
