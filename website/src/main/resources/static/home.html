@@ -32,12 +32,13 @@
 
         .top {
             margin-top: 20px;
+            width: 95%;
         }
 
         .search {
             background: url(img/search.png) no-repeat 4px center;
             padding-left: 40px;
-            width: 600px;
+            width: 95%;
             border-radius: 5px;
             border-width: 2px;
         }
@@ -63,29 +64,33 @@
 
     </style>
 </head>
-<body style="min-height: 1000px">
-<div class="layui-container top" style="margin-left: 40px">
-    <div class="layui-row" style="height: auto">
-        <input type="text" class="layui-input search"/>
-    </div>
-    <div class="layui-carousel" id="test1">
-        <div carousel-item="">
-            <div><img src="./img/blog4.jpg" alt=""></div>
-            <div><img src="./img/blog6.jpg" alt=""></div>
+<body style="min-height: 610px">
+<div class="layui-container top">
+    <div class="layui-row" style="width: 100%">
+        <div class="layui-col-md6">
+            <input id="search" type="text" class="layui-input search"/>
+            <div class="layui-carousel" id="test1">
+                <div carousel-item="">
+                    <div><img src="./img/blog4.jpg" alt=""></div>
+                    <div><img src="./img/blog6.jpg" alt=""></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div id="btnList" style="min-width: 600px;line-height: 36px;"></div>
         </div>
     </div>
-    <div id="btnList" style="min-width: 980px;line-height: 36px;"></div>
 </div>
 <script src="./js/config.js"></script>
 <script>
-    layui.use(['carousel', 'form'], function () {
+    layui.use(['layer', 'carousel', 'form'], function () {
         var carousel = layui.carousel
             , form = layui.form;
 
         //图片轮播
         carousel.render({
             elem: '#test1'
-            , width: '60%'
+            , width: '95%'
             , height: '500px'
             , interval: 5000
         });
@@ -95,35 +100,105 @@
             console.log(res);
         });
 
-    });
+        var T = [];
 
-    var T = [];
+        $(document).ready(function () {
 
-    $(document).ready(function () {
+            let colorArr = ['layui-bg-red', 'layui-bg-orange', 'layui-bg-green', 'layui-bg-cyan', 'layui-bg-blue', 'layui-bg-black'];
 
-        let colorArr = ['layui-bg-red', 'layui-bg-orange', 'layui-bg-green', 'layui-bg-cyan', 'layui-bg-blue', 'layui-bg-black'];
+            let textArr = ['青青', '小可爱', '团团', '坨坨', '小吃货', '厨艺max', '日料', '小裙子', '小烦恼', '女友力'];
 
-        for (let i = 0; i < 20; i++) {
-            let rand = Math.floor(Math.random() * colorArr.length);
-            let btnHtml = "<button id='label_" + i + "' type='button' class='layui-btn layui-btn-sm layui-btn-radius " + colorArr[rand] + "' style='margin-left: 10px;width: 110px;'>"
-                + "<p class='hidden-over' onclick='labelAction("+i+")'><span class='label-over'>标准按钮3.141592653</span></p> <i class='layui-icon layui-icon-note show-close' onclick='deleteAction("+i+")' style='float: right;'></i>"
-                + "</button>";
-            $('#btnList').append(btnHtml);
-            // 初始化定时器数组
-            T['label_' + i] = {
-                'id': 0,
-                'time': 0
-            };
-        }
+            for (let i = 0; i < 20; i++) {
+                let rand = Math.floor(Math.random() * colorArr.length);
+                let btnHtml = "<button id='label_" + i + "' type='button' class='layui-btn layui-btn-sm layui-btn-radius " + colorArr[rand] + "' style='margin-left: 10px;width: 110px;'>"
+                    + "<p class='hidden-over' onclick='labelAction("+i+")'><span class='label-over'>标准按钮3.141592653</span></p> <i class='layui-icon layui-icon-note show-close' onclick='deleteAction("+i+")' style='float: right;'></i>"
+                    + "</button>";
+                $('#btnList').append(btnHtml);
+                // 初始化定时器数组
+                T['label_' + i] = {
+                    'id': 0,
+                    'time': 0
+                };
+            }
 
-        $(".layui-btn-radius").mouseenter(function () {
-            // console.log('mouseenter', this.id);
-            countAnimate(this.id);
-        }).mouseleave(function () {
-            // console.log('mouseleave', this.id);
-            clearAnimate(this.id);
+            $(".layui-btn-radius").mouseenter(function () {
+                // console.log('mouseenter', this.id);
+                countAnimate(this.id);
+            }).mouseleave(function () {
+                // console.log('mouseleave', this.id);
+                clearAnimate(this.id);
+            })
+
+            $("#search").keydown(function (e) {
+                var curKey = e.which;
+                if (curKey === 13) {
+                    let keyword = $(this).val();
+                    console.log('回车事件', keyword);
+                    if(keyword === '19960711' || keyword === '960711') {
+                        //页面层-自定义
+                        layer.open({
+                            id: 'photoBox',
+                            type: 2,
+                            title: false,
+                            closeBtn: 0,
+                            shadeClose: true,
+                            area: ['1200px', '600px'],
+                            skin: 'layui-layer-demo',
+                            content: 'photoBox.html',
+                            // btn: ['发布', '取消'],
+                            yes: function (index) {
+                                layer.close(index);
+                                layer.load({
+                                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                                });
+                            },
+                            success: function () {
+                                setTimeout(() => {
+                                    $('#photoBox').css('width', '1200px');
+                                }, 100);
+                            }
+                            // , btn2: function (index) {
+                            //     layer.close(index);
+                            // }
+                        });
+                    }
+
+                    if(keyword === 'ffiqq' || keyword === '飞飞爱青青') {
+                        //页面层-自定义
+                        layer.open({
+                            id: 'pipeLine',
+                            type: 2,
+                            title: false,
+                            closeBtn: 0,
+                            shadeClose: true,
+                            area: ['1200px', '600px'],
+                            skin: 'layui-layer-demo',
+                            content: 'pipeLine.html',
+                            // btn: ['发布', '取消'],
+                            yes: function (index) {
+                                layer.close(index);
+                                layer.load({
+                                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                                });
+                            },
+                            success: function () {
+                                console.log('open layer');
+                                setTimeout(() => {
+                                    $('#pipeLine').css('width', '1200px');
+                                    $('#pipeLine').css('height', '600px');
+                                }, 100);
+                            }
+                            // , btn2: function (index) {
+                            //     layer.close(index);
+                            // }
+                        });
+                    }
+                    return false;
+                }
+            });
         })
-    })
+
+    });
 
     function labelAction(i) {
         console.log('labelAction', i);

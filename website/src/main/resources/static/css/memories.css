@@ -1398,7 +1398,7 @@
         border-radius: 8px;
         position: absolute;
         left: 61%;
-        bottom: 11%;
+        top: 26%;
         overflow: hidden;
         opacity: 0.9;
         transition: all 3s;
@@ -1599,7 +1599,7 @@
         border-radius: 8px;
         position: absolute;
         left: 23%;
-        bottom: 4%;
+        top: 26%;
         overflow: hidden;
         opacity: 0.9;
         transition: all 10s;
@@ -1903,7 +1903,7 @@
         border-radius: 8px;
         position: absolute;
         left: 23%;
-        top:10%;
+        top: 10%;
         overflow: hidden;
         opacity: 0;
         -webkit-transform: scale(0.5, 0.5);
@@ -1926,7 +1926,7 @@
         border-radius: 8px;
         position: absolute;
         left: 57%;
-        top: 15%;
+        top: 18%;
         overflow: hidden;
         opacity: 0;
         -webkit-transform: scale(0.5, 0.5);
@@ -1951,7 +1951,7 @@
         margin-left: 24px;
         position: absolute;
         right: 77%;
-        top: 15%;
+        top: 14%;
         opacity: 0;
         -webkit-transform: scale(0.5, 0.5);
         transform: scale(0.5, 0.5);
@@ -1975,7 +1975,7 @@
         margin-left: 24px;
         position: absolute;
         right: 43%;
-        top: 18%;
+        top: 22%;
         opacity: 0;
         -webkit-transform: scale(0.5, 0.5);
         transform: scale(0.5, 0.5);
@@ -2059,7 +2059,7 @@
     position: absolute;
     padding-top: 20px;
     left: 5%;
-    top: 12%;
+    top: 6%;
     opacity: 0;
     transition: all 1s;
 }
@@ -3058,7 +3058,7 @@
     }
     .xx91 {
         height: 450px;
-        top:18%;
+        top: 14%;
     }
     .xx92 {
         top:22%;
@@ -3162,12 +3162,11 @@
     font-size: 14px;
     font-color: #000;
     position: absolute;
-    width:80%;
-    top:9%;
-    margin-left:5%;
+    width: 88%;
+    top: 18%;
+    margin-left: 8%;
     opacity: 0;
     transition: all 0.5s;
-    width:88%;
     overflow:hidden;
 }
 
@@ -3182,7 +3181,7 @@
     position: absolute;
     width:80%;
     top:9%;
-    margin-left:5%;
+    margin-left:8%;
     opacity: 0;
     transition: all 0.5s;
     width:88%;
