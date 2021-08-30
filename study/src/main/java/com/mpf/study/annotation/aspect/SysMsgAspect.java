@@ -38,12 +38,12 @@ public class SysMsgAspect {
     private SpringContextUtil springContextUtil;
 
     //方法一：指定注解拦截
-    @Pointcut("@annotation(com.mpf.forwork.annotation.SysMsg)")
+    @Pointcut("@annotation(com.mpf.study.annotation.SysMsg)")
     public void msg() {
     }
 
     //方法二：指定方法拦截
-    @Pointcut("execution(* com.mpf.forwork.controller.MessageController.test(..))")
+    @Pointcut("execution(* com.mpf.study.controller.MessageController.sendTask(..))")
     private void test() {
     }
 

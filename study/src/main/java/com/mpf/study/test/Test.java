@@ -54,8 +54,65 @@ public class Test implements Serializable {
 
     public static void main(String[] args) {
 
-        int num = -10;
-        System.out.println(num >>> 1 & 1);
+//        int num = -10;
+//        System.out.println(num >>> 1 & 1);
+//        printArrayAll(new ArrayList<>(), new String[]{"a","b","c","d"});
+//        countOneOfNumber(128);
+
+//        firstPublicNode(new ListNode(4, new ListNode(3, new ListNode(6))),
+//                new ListNode(2, new ListNode(4, new ListNode(3, new ListNode(1)))));
+    }
+
+    /**
+     * 查找第一个公共节点
+     * @param l1
+     * @param l2
+     */
+    public static void firstPublicNode(ListNode l1, ListNode l2) {
+        ListNode h1 = l1, h2 = l2;
+        while(h1.val!=h2.val) {
+            h1 = h1.next!=null?h1.next:l2;
+            h2 = h2.next!=null?h2.next:l1;
+        }
+        System.out.println(h1.val);
+    }
+
+    /**
+     * 数字中为一的个数
+     * @param num
+     */
+    public static void countOneOfNumber(int num) {
+        int count = 0;
+        while(num>0){
+            count += num&1;
+            num = num>>1;
+        }
+        System.out.println(count);
+    }
+
+    /**
+     * 数组全排列打印
+     * @param list
+     * @param arr
+     */
+    public static void printArrayAll(List<String> list, String[] arr) {
+        if (arr.length < 1 || arr[0] == null) {
+            System.out.println(list.toString());
+            return;
+        }
+        for (String cur : arr) {
+            String[] temp = new String[arr.length - 1];
+            int i = 0;
+            for (String tmp : arr) {
+                if (!tmp.equals(cur)) {
+                    temp[i++] = tmp;
+                }
+            }
+            list.removeIf(item -> item.equals(cur));
+            list.add(cur);
+            printArrayAll(list, temp);
+
+        }
 
     }
 
@@ -505,6 +562,22 @@ class TreeNode {
     }
 
 }
+
+/**
+ * 单链表节点
+ */
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
+    }
+    ListNode(int x, ListNode nx) {
+        this.val = x;
+        this.next = nx;
+    }
+}
+
 
 /**
  * 二叉树节点

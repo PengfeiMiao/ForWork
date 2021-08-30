@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE + 1)
 @Slf4j
 public class SysClassAspect {
-    @Pointcut("@within(com.mpf.forwork.annotation.SysClass)")
+    @Pointcut("@within(com.mpf.study.annotation.SysClass)")
     public void test() {
     }
 
-    @Pointcut("@annotation(com.mpf.forwork.annotation.SysClass)")
+    @Pointcut("@annotation(com.mpf.study.annotation.SysClass)")
     public void test1() {
     }
 
