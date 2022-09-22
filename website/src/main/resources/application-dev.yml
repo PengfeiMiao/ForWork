@@ -8,18 +8,13 @@ properties:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    # 配置启动自动执行sql
-    schema: classpath*:sql/forwork.sql
-    sql-script-encoding: utf-8
-    platform: mysql
-    initialization-mode: never
     # 配置Druid的其他参数，以下配置必须增加一个配置文件才能有效
     # 初始化大小，最小，最大
     druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/forwork?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-      username: root
-      password: myegoo3466
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:postgresql://localhost:5432/postgres?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+      username: flyway
+      password: flyway
       initialSize: 5
       minIdle: 5
       maxActive: 20
@@ -29,7 +24,7 @@ spring:
       timeBetweenEvictionRunsMillis: 60000
       # 配置一个连接在池中最小生存的时间，单位是毫秒
       minEvictableIdleTimeMillis: 300000
-      validationQuery: SELECT 1 FROM DUAL
+      validationQuery: SELECT 1
       testWhileIdle: true
       testOnBorrow: false
       testOnReturn: false
@@ -73,3 +68,13 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  sql:
+    # 配置启动自动执行sql
+    init:
+      schema-locations: classpath*:sql/forwork.sql
+      encoding: utf-8
+      platform: mysql
+      mode:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher

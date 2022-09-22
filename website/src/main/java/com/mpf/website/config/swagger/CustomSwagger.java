@@ -1,7 +1,5 @@
 package com.mpf.website.config.swagger;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Optional;
 import com.mpf.website.config.swagger.resource.SwaggerInfo;
 import com.mpf.website.config.swagger.resource.SwaggerResourceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,7 @@ import java.util.*;
 public class CustomSwagger implements SwaggerResourcesProvider {
     private final String swagger1Url;
     private final String swagger2Url;
-    @VisibleForTesting
     boolean swagger1Available;
-    @VisibleForTesting
     boolean swagger2Available;
     private final DocumentationCache documentationCache;
 
