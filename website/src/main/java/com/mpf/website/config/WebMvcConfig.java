@@ -21,6 +21,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return lci;
     }
 
+//    @Bean
+//    public WebSecurityCustomizer swaggerWebSecurityCustomizer() {
+//        return (web) -> {
+//            web.ignoring().antMatchers(new String[]{"/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/v3/api-docs", "/webjars/**"});
+//        };
+//    }
+
     /**
      * 静态资源配置
      *
@@ -40,6 +47,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         // webjars swagger-ui knife4j
         registry.addResourceHandler("doc.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");

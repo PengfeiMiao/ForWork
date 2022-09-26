@@ -12,7 +12,7 @@ spring:
     jedis:
       pool:
         max-active: 16
-        max-wait: -1ms  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
         max-idle: 16
         min-idle: 0
       timeout: 5000
@@ -21,6 +21,9 @@ spring:
 #    sentinel:
 #      master: mymaster
 #      nodes:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 ########################################################
 ### properties setting  动态配置属性

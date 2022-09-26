@@ -71,10 +71,10 @@ spring:
   sql:
     # 配置启动自动执行sql
     init:
-      schema-locations: classpath*:sql/forwork.sql
       encoding: utf-8
-      platform: mysql
-      mode:
+      platform: postgresql  # mysql
+      schema-locations: classpath*:sql/${spring.sql.init.platform}/forwork.sql
+      mode: always # never #
   mvc:
-    path match:
+    pathmatch:
       matching-strategy: ant_path_matcher
